@@ -29,11 +29,11 @@ export function useCarousel() {
       setActiveIndex((prev) =>
         dir === "next"
           ? (prev + 1) % TEAM.length
-          : (prev + TEAM.length - 1) % TEAM.length
+          : (prev + TEAM.length - 1) % TEAM.length,
       );
       setTimeout(() => setIsAnimating(false), 850);
     },
-    [isAnimating]
+    [isAnimating],
   );
 
   // Derive each card's positional role from activeIndex
