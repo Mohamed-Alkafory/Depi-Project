@@ -23,7 +23,7 @@ export default function HomiTeamSection() {
 
   return (
     <section
-      className="relative isolate w-full overflow-hidden"
+      className="relative isolate w-full overflow-hidden "
       style={{
         height: "clamp(680px, 88vh, 920px)",
         fontFamily: "'Inter', sans-serif",
@@ -50,7 +50,7 @@ export default function HomiTeamSection() {
         <div
           className="absolute inset-x-0 flex justify-center pointer-events-none select-none"
           style={{
-            top: "16%",
+            top: "10%",
             zIndex: 2,
           }}
         >
