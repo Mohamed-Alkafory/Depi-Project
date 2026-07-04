@@ -25,7 +25,7 @@ function FilterSelect({ label, value, onChange, options }) {
   );
 }
 
-export const Pricing = () => {
+export const Plans = () => {
   const [type, setType] = useState("");
   const [style, setStyle] = useState("");
   const [bedrooms, setBedrooms] = useState("");

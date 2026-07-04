@@ -2,13 +2,19 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
-  House,
   Building2,
+  FileText,
+  Wallet,
   Phone,
   Info,
   Heart,
+  ShoppingCart,
+  CreditCard,
+  LayoutDashboard,
+  Settings,
   PanelLeftClose,
   PanelLeft,
+  X,
   LogOut,
 } from "lucide-react";
 import {
@@ -26,19 +32,70 @@ const DURATION = 300;
 const EXPANDED = "18rem";
 const COLLAPSED = "3.3rem";
 
-export default function AppSidebar() {
+function NavLink({ to, icon, label, collapsed, isActive }) {
+  return (
+    <SidebarMenuItem className="list-none!">
+      <Link
+        to={to}
+        className={`group relative flex h-9 w-full items-center rounded-lg px-4 text-sm transition-colors duration-75 active:scale-[0.99] overflow-hidden ${
+          isActive
+            ? "bg-sidebar-accent text-sidebar-accent-foreground"
+            : "text-sidebar-foreground/80 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground"
+        }`}
+      >
+        <div className="flex w-full -translate-x-2 items-center gap-3">
+          <span className="grid size-5 shrink-0 place-items-center text-sidebar-foreground">
+            {icon}
+          </span>
+          <span
+            className="flex-1 truncate text-left"
+            style={{
+              transition: `opacity 150ms ${EASE}`,
+              opacity: collapsed ? 0 : 1,
+            }}
+          >
+            {label}
+          </span>
+        </div>
+      </Link>
+    </SidebarMenuItem>
+  );
+}
+
+function SectionLabel({ label, collapsed }) {
+  return (
+    <div
+      className="px-4 pt-4 pb-1"
+      style={{
+        transition: `opacity 150ms ${EASE}`,
+        opacity: collapsed ? 0 : 1,
+      }}
+    >
+      <span className="text-[11px] font-semibold uppercase tracking-wider text-sidebar-foreground/40">
+        {label}
+      </span>
+    </div>
+  );
+}
+
+function Divider({ collapsed }) {
+  return (
+    <div
+      className="mx-2 my-2 border-t border-sidebar-border"
+      style={{
+        transition: `opacity 150ms ${EASE}`,
+        opacity: collapsed ? 0 : 1,
+      }}
+    />
+  );
+}
+
+export default function AppSidebar({ onClose }) {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
 
-  const navItems = [
-    { label: "Home", icon: <House size={16} />, path: "/" },
-    { label: "Plans", icon: <Building2 size={16} />, path: "/pricing" },
-    { label: "Favorites", icon: <Heart size={16} />, path: "/favorites" },
-    { label: "Contact Us", icon: <Phone size={16} />, path: "/contact" },
-    { label: "About Us", icon: <Info size={16} />, path: "/about" },
-  ];
-
   const isActive = (path) => location.pathname === path;
+  const isActivePrefix = (prefix) => location.pathname.startsWith(prefix);
 
   return (
     <div className="relative flex h-full">
@@ -70,46 +127,53 @@ export default function AppSidebar() {
               >
                 <img src="/Homi logo2.png" alt="Homi" className="h-8 w-auto" />
               </div>
+
+              {onClose && (
+                <button
+                  type="button"
+                  aria-label="Close sidebar"
+                  onClick={onClose}
+                  className="absolute right-2 top-2 z-10 grid size-8 cursor-pointer place-items-center rounded-md text-muted-foreground transition-colors duration-150 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground md:hidden"
+                >
+                  <X size={18} />
+                </button>
+              )}
+
               <button
                 type="button"
                 aria-label={collapsed ? "Open sidebar" : "Close sidebar"}
                 title={collapsed ? "Open sidebar" : "Close sidebar"}
                 onClick={() => setCollapsed((c) => !c)}
-                className="absolute right-2 top-2 z-10 grid size-8 cursor-pointer place-items-center rounded-md text-muted-foreground transition-colors duration-150 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                className="absolute right-2 top-2 z-10 hidden md:grid size-8 cursor-pointer place-items-center rounded-md text-muted-foreground transition-colors duration-150 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
               >
                 {collapsed ? <PanelLeft size={18} /> : <PanelLeftClose size={18} />}
               </button>
             </SidebarHeader>
 
             <SidebarContent className="gap-0! pt-2 overflow-x-hidden!">
+              <SectionLabel label="Plans" collapsed={collapsed} />
               <SidebarMenu className="gap-px! px-2">
-                {navItems.map((it) => (
-                  <SidebarMenuItem key={it.label} className="list-none!">
-                    <Link
-                      to={it.path}
-                      className={`group relative flex h-9 w-full items-center rounded-lg px-4 text-sm transition-colors duration-75 active:scale-[0.99] overflow-hidden ${
-                        isActive(it.path)
-                          ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                          : "text-sidebar-foreground/80 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground"
-                      }`}
-                    >
-                      <div className="flex w-full -translate-x-2 items-center gap-3">
-                        <span className="grid size-5 shrink-0 place-items-center text-sidebar-foreground">
-                          {it.icon}
-                        </span>
-                        <span
-                          className="flex-1 truncate text-left"
-                          style={{
-                            transition: `opacity 150ms ${EASE}`,
-                            opacity: collapsed ? 0 : 1,
-                          }}
-                        >
-                          {it.label}
-                        </span>
-                      </div>
-                    </Link>
-                  </SidebarMenuItem>
-                ))}
+                <NavLink to="/plans" icon={<Building2 size={16} />} label="Plans" collapsed={collapsed} isActive={isActive("/plans")} />
+                <NavLink to="/plan-details" icon={<FileText size={16} />} label="Plan Details" collapsed={collapsed} isActive={isActivePrefix("/plan-details")} />
+                <NavLink to="/pricing" icon={<Wallet size={16} />} label="Pricing" collapsed={collapsed} isActive={isActive("/pricing")} />
+                <NavLink to="/about" icon={<Info size={16} />} label="About" collapsed={collapsed} isActive={isActive("/about")} />
+                <NavLink to="/contact" icon={<Phone size={16} />} label="Contact Us" collapsed={collapsed} isActive={isActive("/contact")} />
+              </SidebarMenu>
+
+              <Divider collapsed={collapsed} />
+
+              <SidebarMenu className="gap-px! px-2">
+                <NavLink to="/favorites" icon={<Heart size={16} />} label="Favourite" collapsed={collapsed} isActive={isActive("/favorites")} />
+                <NavLink to="/cart" icon={<ShoppingCart size={16} />} label="Cart" collapsed={collapsed} isActive={isActive("/cart")} />
+                <NavLink to="/payment-method" icon={<CreditCard size={16} />} label="Payment Method" collapsed={collapsed} isActive={isActive("/payment-method")} />
+              </SidebarMenu>
+
+              <Divider collapsed={collapsed} />
+
+              <SectionLabel label="Admin Setting" collapsed={collapsed} />
+              <SidebarMenu className="gap-px! px-2">
+                <NavLink to="/admin/overview" icon={<LayoutDashboard size={16} />} label="Overview" collapsed={collapsed} isActive={isActive("/admin/overview")} />
+                <NavLink to="/admin/plans-management" icon={<Settings size={16} />} label="Plans Management" collapsed={collapsed} isActive={isActive("/admin/plans-management")} />
               </SidebarMenu>
             </SidebarContent>
 
