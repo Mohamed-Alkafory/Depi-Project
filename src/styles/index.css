@@ -222,3 +222,43 @@ code {
     @apply font-sans;
   }
 }
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-33.33%); }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+@keyframes scrollDot-x {
+  0%   { transform: translateY(0);   opacity: 1; }
+  60%  { transform: translateY(6px); opacity: 0.3; }
+  100% { transform: translateY(0);   opacity: 1; }
+}
+
+.animate-scroll-dot {
+  animation: scrollDot-x 1.6s ease-in-out infinite;
+}
+
+@keyframes chevronFade {
+  0%, 100%   { opacity: 0.8; }
+  50% { opacity: 0.2; }
+}
+
+.animate-chevron {
+  animation: chevronFade 1.6s ease-in-out infinite;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+@keyframes stepFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-step-fade {
+  animation: stepFadeIn 0.35s ease-out;
+}
