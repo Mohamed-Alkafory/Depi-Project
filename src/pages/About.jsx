@@ -1,21 +1,21 @@
 import { HomiTeamSection } from "@/features/about";
 import AboutIntro from "@/features/about/components/AboutIntro";
 import HomiAboutSection from "@/features/about/components/HomiAboutSection";
-import HomiBlueprintSection from "@/features/about/components/HomiBlueprintSection";
-import HomiStatsBar from "@/features/about/components/HomiStatsBar";
+import HomiCTASection from "@/features/about/components/HomiCTASection";
 import IntroSection from "@/features/about/components/IntroSection";
+import StackingCardsParallax from "@/features/about/components/pixel-perfect/stacking-cards-parallax";
+import WhyChooseHOMI from "@/features/about/components/WhyChooseHOMI";
 
 export const About = () => {
   return (
     <>
       <AboutIntro />
-      <HomiStatsBar />
       <HomiAboutSection />
-      <HomiBlueprintSection />
-      <div className="min-h-screen bg-[#0F0F0F]">
-        <IntroSection />
-        <HomiTeamSection />
-      </div>
+      <WhyChooseHOMI />
+      <StackingCardsParallax />
+      <IntroSection />
+      <HomiTeamSection />
+      <HomiCTASection />
     </>
   );
 };
