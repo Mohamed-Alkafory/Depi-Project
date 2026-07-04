@@ -1,0 +1,968 @@
+[
+  {
+    "id": 1,
+    "title": "Modern Farmhouse House Plan with Split Bedrooms and Home Office",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_1.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan1_1.gif",
+        "@/assets/images/plans/plan1_2.gif"
+      ]
+    },
+    "price_egp": 4200000,
+    "filters": {
+      "total_area_m2": 203.5,
+      "bedrooms": 3,
+      "bathrooms": 3.5,
+      "plan_type": "Single Family",
+      "floors": 1,
+      "style": "Modern Farmhouse",
+      "garage": {
+        "type": "Attached",
+        "cars": 2,
+        "entry_location": "Side"
+      },
+      "additional_rooms": [
+        "Home Office"
+      ],
+      "outdoor_features": [
+        "Front Porch"
+      ]
+    },
+    "area_breakdown": {
+      "total_m2": 203.5,
+      "first_floor_m2": 203.5,
+      "porch_front_m2": 36.4
+    },
+    "dimensions": {
+      "width_m": 27.38,
+      "depth_m": 15.04
+    },
+    "foundation": [
+      "Slab"
+    ],
+    "roof": {
+      "primary_pitch": "8 on 12",
+      "secondary_pitch": "12 on 12",
+      "framing_type": "Stick"
+    }
+  },
+  {
+    "id": 2,
+    "title": "Modern Farmhouse House Plan with 2 Flexible Bedrooms and 3 Car Garage",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_2.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan2_1.webp",
+        "@/assets/images/plans/plan2_2.webp"
+      ]
+    },
+    "price_egp": 6100000,
+    "filters": {
+      "total_area_m2": 280.3,
+      "bedrooms": 3,
+      "bathrooms": 3.5,
+      "plan_type": "Single Family",
+      "floors": 1,
+      "style": "Modern Farmhouse",
+      "garage": {
+        "type": "Standard",
+        "cars": 3,
+        "entry_location": null
+      },
+      "additional_rooms": [
+        "Bonus Room"
+      ],
+      "outdoor_features": []
+    },
+    "area_breakdown": {
+      "total_m2": 280.3,
+      "first_floor_m2": 280.3,
+      "bonus_m2": 36
+    },
+    "dimensions": {
+      "width_m": 30.27,
+      "depth_m": 22.76,
+      "max_ridge_height_m": 7.06
+    },
+    "foundation": [
+      "Basement"
+    ],
+    "roof": {
+      "primary_pitch": "12 on 12",
+      "secondary_pitch": "9 on 12",
+      "framing_type": "Stick And Truss"
+    }
+  },
+  {
+    "id": 3,
+    "title": "Charming Farmhouse House Plan with 3 Bedrooms and Inviting Covered Porch",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_3.avif",
+        "@/assets/images/homes/Picture3_1.avif",
+        "@/assets/images/homes/Picture3_2.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan3_1.webp",
+        "@/assets/images/plans/plan3_2.gif"
+      ]
+    },
+    "price_egp": 2800000,
+    "filters": {
+      "total_area_m2": 136.7,
+      "bedrooms": 3,
+      "bathrooms": 2.5,
+      "plan_type": "Single Family",
+      "floors": 2,
+      "style": "Farmhouse",
+      "garage": null,
+      "additional_rooms": [],
+      "outdoor_features": [
+        "Covered Porch"
+      ]
+    },
+    "area_breakdown": {
+      "total_m2": 136.7,
+      "first_floor_m2": 66.8,
+      "second_floor_m2": 69.9
+    },
+    "dimensions": {
+      "width_m": 7.62,
+      "depth_m": 11.58,
+      "max_ridge_height_m": 8.84
+    },
+    "foundation": [
+      "Basement"
+    ],
+    "roof": {
+      "primary_pitch": "8 on 12",
+      "secondary_pitch": "8 on 12",
+      "framing_type": "Stick"
+    }
+  },
+  {
+    "id": 4,
+    "title": "One-Story Country Craftsman House Plan with Vaulted Great Room and 2-Car Garage",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_4.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan4_1.jpg",
+        "@/assets/images/plans/plan4_2.gif"
+      ]
+    },
+    "price_egp": 3900000,
+    "filters": {
+      "total_area_m2": 188.6,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "plan_type": "Single Family",
+      "floors": 1,
+      "style": "Craftsman",
+      "garage": {
+        "type": "Attached",
+        "cars": 2,
+        "entry_location": "Front"
+      },
+      "additional_rooms": [
+        "Great Room"
+      ],
+      "outdoor_features": [
+        "Porch"
+      ]
+    },
+    "area_breakdown": {
+      "total_m2": 188.6,
+      "first_floor_m2": 188.6,
+      "porch_combined_m2": 87.2
+    },
+    "dimensions": {
+      "width_m": 24.69,
+      "depth_m": 19.51,
+      "max_ridge_height_m": 5.77
+    },
+    "foundation": [
+      "Slab"
+    ],
+    "roof": {
+      "primary_pitch": "4 on 12",
+      "secondary_pitch": "5 on 12",
+      "framing_type": "Truss"
+    }
+  },
+  {
+    "id": 5,
+    "title": "2-Bed Barndominium-Style Farmhouse with Wrap Around Porch and Great Room",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_5.avif",
+        "@/assets/images/homes/Picture5_1.avif",
+        "@/assets/images/homes/Picture5_2.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan5_1.gif",
+        "@/assets/images/plans/plan5_2.gif"
+      ]
+    },
+    "price_egp": 2400000,
+    "filters": {
+      "total_area_m2": 117.1,
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "plan_type": "Barndominium",
+      "floors": 1,
+      "style": "Farmhouse",
+      "garage": {
+        "type": "Attached",
+        "cars": 2,
+        "entry_location": "Side"
+      },
+      "additional_rooms": [
+        "Great Room"
+      ],
+      "outdoor_features": [
+        "Wrap Around Porch",
+        "Front Porch"
+      ]
+    },
+    "area_breakdown": {
+      "total_m2": 117.1,
+      "first_floor_m2": 117.1,
+      "porch_front_m2": 37.2
+    },
+    "dimensions": {
+      "width_m": 12.19,
+      "depth_m": 24.38,
+      "max_ridge_height_m": 7.92
+    },
+    "foundation": [
+      "Slab"
+    ],
+    "roof": {
+      "primary_pitch": "8 on 12",
+      "secondary_pitch": "2.5 on 12",
+      "framing_type": "Stick"
+    }
+  },
+  {
+    "id": 6,
+    "title": "Modest-Sized Three-Bed Farmhouse Plan",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_6.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan6_1.gif",
+        "@/assets/images/plans/plan6_2.gif",
+        "@/assets/images/plans/plan6_3.gif"
+      ]
+    },
+    "price_egp": 2900000,
+    "filters": {
+      "total_area_m2": 141.3,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "plan_type": "Single Family",
+      "floors": 1,
+      "style": "Farmhouse",
+      "garage": {
+        "type": "Attached",
+        "cars": 2,
+        "entry_location": "Front"
+      },
+      "additional_rooms": [],
+      "outdoor_features": [
+        "Front Porch"
+      ]
+    },
+    "area_breakdown": {
+      "total_m2": 141.3,
+      "first_floor_m2": 141.3,
+      "porch_front_m2": 12.4
+    },
+    "dimensions": {
+      "width_m": 15.95,
+      "depth_m": 17.02,
+      "max_ridge_height_m": 7.32
+    },
+    "foundation": [
+      "Slab"
+    ],
+    "roof": {
+      "primary_pitch": "8 on 12",
+      "secondary_pitch": "9 on 12",
+      "framing_type": "Stick"
+    }
+  },
+  {
+    "id": 7,
+    "title": "2-Bed 2000 Square Foot Modern House Plan with Drive-Through Garage",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_7.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan7_1.webp",
+        "@/assets/images/plans/plan7_2.gif"
+      ]
+    },
+    "price_egp": 3700000,
+    "filters": {
+      "total_area_m2": 187.3,
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "plan_type": "Single Family",
+      "floors": 1,
+      "style": "Modern",
+      "garage": {
+        "type": "Attached",
+        "cars": 3,
+        "entry_location": "Front"
+      },
+      "additional_rooms": [],
+      "outdoor_features": [
+        "Porch"
+      ]
+    },
+    "area_breakdown": {
+      "total_m2": 187.3,
+      "first_floor_m2": 187.3,
+      "porch_combined_m2": 39.9
+    },
+    "dimensions": {
+      "width_m": 19.81,
+      "depth_m": 21.95,
+      "max_ridge_height_m": 6.65
+    },
+    "foundation": [
+      "Slab"
+    ],
+    "roof": {
+      "primary_pitch": "3 on 12",
+      "secondary_pitch": "4 on 12",
+      "framing_type": "Truss"
+    }
+  },
+  {
+    "id": 8,
+    "title": "Classic 3-Bed Country Farmhouse Plan",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_8.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan8_1.gif",
+        "@/assets/images/plans/plan8_2.gif",
+        "@/assets/images/plans/plan8_3.gif"
+      ]
+    },
+    "price_egp": 3800000,
+    "filters": {
+      "total_area_m2": 185.2,
+      "bedrooms": 3,
+      "bathrooms": 2.5,
+      "plan_type": "Single Family",
+      "floors": 1,
+      "style": "Farmhouse",
+      "garage": {
+        "type": "Attached",
+        "cars": 2,
+        "entry_location": "Side"
+      },
+      "additional_rooms": [
+        "Great Room",
+        "Bonus Room"
+      ],
+      "outdoor_features": []
+    },
+    "area_breakdown": {
+      "total_m2": 185.2,
+      "first_floor_m2": 185.2,
+      "bonus_m2": 37.8
+    },
+    "dimensions": {
+      "width_m": 20.93,
+      "depth_m": 19.86,
+      "max_ridge_height_m": 7.32
+    },
+    "foundation": [
+      "Slab"
+    ],
+    "roof": {
+      "primary_pitch": "10 on 12",
+      "secondary_pitch": "4 on 12",
+      "framing_type": "Stick"
+    }
+  },
+  {
+    "id": 9,
+    "title": "Two-Story Duplex Home Plan with 3 Beds and Great Room",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_9.avif",
+        "@/assets/images/homes/Picture9_1.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan9_1.gif",
+        "@/assets/images/plans/plan9_2.gif"
+      ]
+    },
+    "price_egp": 5200000,
+    "filters": {
+      "total_area_m2": 259.6,
+      "bedrooms": 6,
+      "bathrooms": 4,
+      "plan_type": "Duplex",
+      "floors": 2,
+      "style": "Traditional",
+      "garage": null,
+      "additional_rooms": [
+        "Great Room"
+      ],
+      "outdoor_features": []
+    },
+    "area_breakdown": {
+      "total_m2": 259.6,
+      "per_unit_m2": 129.8,
+      "first_floor_m2": 159.6,
+      "second_floor_m2": 99.96
+    },
+    "units": 2,
+    "dimensions": {
+      "width_m": 10.67,
+      "depth_m": 15.24,
+      "max_ridge_height_m": 8.23
+    },
+    "foundation": [
+      "Slab"
+    ],
+    "roof": {
+      "primary_pitch": "5 on 12",
+      "secondary_pitch": "8 on 12"
+    }
+  },
+  {
+    "id": 10,
+    "title": "Two-Story Contemporary Duplex House Plan Perfect for Narrow Lot",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_10.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan10_1.gif",
+        "@/assets/images/plans/plan10_2.gif"
+      ]
+    },
+    "price_egp": 4300000,
+    "filters": {
+      "total_area_m2": 205.5,
+      "bedrooms": 6,
+      "bathrooms": 4,
+      "plan_type": "Duplex",
+      "floors": 2,
+      "style": "Contemporary",
+      "garage": null,
+      "additional_rooms": [],
+      "outdoor_features": []
+    },
+    "area_breakdown": {
+      "total_m2": 205.5,
+      "per_unit_m2": 102.7,
+      "first_floor_m2": 101.6,
+      "second_floor_m2": 104
+    },
+    "units": 2,
+    "dimensions": {
+      "width_m": 6.1,
+      "depth_m": 18.59,
+      "max_ridge_height_m": 8.18
+    },
+    "foundation": [
+      "Crawl"
+    ],
+    "roof": {
+      "primary_pitch": "6 on 12",
+      "secondary_pitch": "4 on 12",
+      "framing_type": "Truss"
+    }
+  },
+  {
+    "id": 11,
+    "title": "Modern Duplex House Plan with Matching 3 Bedroom 2 Bath Units",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/picture_11.avif",
+        "@/assets/images/homes/Picture11_1.avif",
+        "@/assets/images/homes/Picture11_2.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan11_1.avif",
+        "@/assets/images/plans/plan11_2.gif"
+      ]
+    },
+    "price_egp": 5800000,
+    "filters": {
+      "total_area_m2": 282.8,
+      "bedrooms": 6,
+      "bathrooms": 6,
+      "plan_type": "Duplex",
+      "floors": 2,
+      "style": "Modern",
+      "garage": null,
+      "additional_rooms": [],
+      "outdoor_features": []
+    },
+    "area_breakdown": {
+      "total_m2": 282.8,
+      "per_unit_m2": 141.4,
+      "first_floor_m2": 143.6,
+      "second_floor_m2": 139.2
+    },
+    "units": 2,
+    "dimensions": {
+      "width_m": 10.67,
+      "depth_m": 14.94,
+      "max_ridge_height_m": 7.54
+    },
+    "foundation": [
+      "Basement"
+    ],
+    "roof": {
+      "primary_pitch": "3 on 12",
+      "framing_type": "Truss"
+    }
+  },
+  {
+    "id": 12,
+    "title": "Contemporary Duplex House Plan with 3 Bed Units",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_12.avif",
+        "@/assets/images/homes/Picture12_1.avif",
+        "@/assets/images/homes/Picture12_2.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan12_1.gif",
+        "@/assets/images/plans/Plan12_2.gif"
+      ]
+    },
+    "price_egp": 4800000,
+    "filters": {
+      "total_area_m2": 235.2,
+      "bedrooms": 6,
+      "bathrooms": 6,
+      "plan_type": "Duplex",
+      "floors": 2,
+      "style": "Contemporary",
+      "garage": null,
+      "additional_rooms": [],
+      "outdoor_features": []
+    },
+    "area_breakdown": {
+      "total_m2": 235.2,
+      "per_unit_m2": 117.6,
+      "first_floor_m2": 135.8,
+      "second_floor_m2": 99.4
+    },
+    "units": 2,
+    "dimensions": {
+      "width_m": 9.14,
+      "depth_m": 16.15,
+      "max_ridge_height_m": 9.8
+    },
+    "foundation": [
+      "Crawl"
+    ],
+    "roof": {
+      "primary_pitch": "6 on 12",
+      "framing_type": "Stick"
+    }
+  },
+  {
+    "id": 13,
+    "title": "3-Bed Contemporary House Plan with Expansive Rear Windows",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_13.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan13_1.gif",
+        "@/assets/images/plans/plan13_2.gif"
+      ]
+    },
+    "price_egp": 3200000,
+    "filters": {
+      "total_area_m2": 159.8,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "plan_type": "Single Family",
+      "floors": 1,
+      "style": "Contemporary",
+      "garage": null,
+      "additional_rooms": [],
+      "outdoor_features": [
+        "Porch"
+      ]
+    },
+    "area_breakdown": {
+      "total_m2": 159.8,
+      "first_floor_m2": 159.8,
+      "porch_combined_m2": 55.7
+    },
+    "dimensions": {
+      "width_m": 14.63,
+      "depth_m": 16.15,
+      "max_ridge_height_m": 5.54
+    },
+    "foundation": [
+      "Slab"
+    ],
+    "roof": {
+      "primary_pitch": "2 on 12",
+      "secondary_pitch": "6 on 12",
+      "framing_type": "Stick"
+    }
+  },
+  {
+    "id": 14,
+    "title": "2-Bed Barndominium with Oversized 3-Car Garage and Workshop",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_14.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan14.gif"
+      ]
+    },
+    "price_egp": 1900000,
+    "filters": {
+      "total_area_m2": 91,
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "plan_type": "Barndominium",
+      "floors": 1,
+      "style": "Modern",
+      "garage": {
+        "type": "Attached",
+        "cars": 3,
+        "entry_location": "Front"
+      },
+      "additional_rooms": [
+        "Workshop"
+      ],
+      "outdoor_features": [
+        "Front Porch"
+      ]
+    },
+    "area_breakdown": {
+      "total_m2": 91,
+      "first_floor_m2": 91,
+      "porch_front_m2": 13
+    },
+    "dimensions": {
+      "width_m": 21.34,
+      "depth_m": 12.19,
+      "max_ridge_height_m": 5.49
+    },
+    "foundation": [
+      "Monolithic Slab",
+      "Slab"
+    ],
+    "roof": {
+      "framing_type": "Stick And Truss"
+    }
+  },
+  {
+    "id": 15,
+    "title": "Rustic Barn House Plan Featuring One Bedroom and Massive Six Car Garage",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_15.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan15_1.gif",
+        "@/assets/images/plans/plan15_2.gif"
+      ]
+    },
+    "price_egp": 3500000,
+    "filters": {
+      "total_area_m2": 169.5,
+      "bedrooms": 2,
+      "bathrooms": 1.5,
+      "plan_type": "Barndominium",
+      "floors": 2,
+      "style": "Rustic",
+      "garage": {
+        "type": "Drive Under",
+        "cars": 6,
+        "entry_location": "Side"
+      },
+      "additional_rooms": [],
+      "outdoor_features": []
+    },
+    "area_breakdown": {
+      "total_m2": 169.5,
+      "first_floor_m2": 13.5,
+      "second_floor_m2": 156.1
+    },
+    "dimensions": {
+      "width_m": 18.29,
+      "depth_m": 12.19,
+      "max_ridge_height_m": 9.65
+    },
+    "foundation": [
+      "Walkout"
+    ],
+    "roof": {
+      "primary_pitch": "4 on 12",
+      "secondary_pitch": "10 on 12",
+      "framing_type": "Stick And Truss"
+    }
+  },
+  {
+    "id": 16,
+    "title": "Three-Bedroom Traditional Farmhouse House Plan with Covered Front Porch",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_16.avif",
+        "@/assets/images/homes/Picture16_1.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan16_1.gif",
+        "@/assets/images/plans/plan16_2.gif"
+      ]
+    },
+    "price_egp": 2700000,
+    "filters": {
+      "total_area_m2": 133.2,
+      "bedrooms": 3,
+      "bathrooms": 2.5,
+      "plan_type": "Single Family",
+      "floors": 2,
+      "style": "Traditional Farmhouse",
+      "garage": null,
+      "additional_rooms": [],
+      "outdoor_features": [
+        "Covered Front Porch"
+      ]
+    },
+    "area_breakdown": {
+      "total_m2": 133.2,
+      "first_floor_m2": 67.3,
+      "second_floor_m2": 66
+    },
+    "dimensions": {
+      "width_m": 6.4,
+      "depth_m": 12.8,
+      "max_ridge_height_m": 8.51
+    },
+    "foundation": [
+      "Basement"
+    ],
+    "roof": {
+      "primary_pitch": "6 on 12",
+      "secondary_pitch": "9 on 12",
+      "framing_type": "Truss"
+    }
+  },
+  {
+    "id": 17,
+    "title": "Modern Mountain Transitional House Plan with 5 Bedrooms and Wine Room",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_17.avif",
+        "@/assets/images/homes/Picture17_1.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan17_1.gif",
+        "@/assets/images/plans/plan17_2.gif"
+      ]
+    },
+    "price_egp": 9500000,
+    "filters": {
+      "total_area_m2": 442,
+      "bedrooms": 5,
+      "bathrooms": 5.5,
+      "plan_type": "Single Family",
+      "floors": 2,
+      "style": "Modern",
+      "garage": {
+        "type": "Standard",
+        "cars": 3,
+        "entry_location": "Front"
+      },
+      "additional_rooms": [
+        "Wine Room"
+      ],
+      "outdoor_features": []
+    },
+    "area_breakdown": {
+      "total_m2": 442,
+      "first_floor_m2": 311.6,
+      "second_floor_m2": 130.4
+    },
+    "dimensions": {
+      "width_m": 24.82,
+      "depth_m": 22.3,
+      "max_ridge_height_m": 8.46
+    },
+    "foundation": [
+      "Monolithic Slab"
+    ],
+    "roof": {
+      "primary_pitch": "2 on 12",
+      "secondary_pitch": "1.5 on 12",
+      "framing_type": "Stick And Truss"
+    }
+  },
+  {
+    "id": 18,
+    "title": "One-Story 3-Bed Modern Farmhouse Plan",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_18.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan18_1.gif",
+        "@/assets/images/plans/plan18_2.gif"
+      ]
+    },
+    "price_egp": 3400000,
+    "filters": {
+      "total_area_m2": 166.9,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "plan_type": "Single Family",
+      "floors": 1,
+      "style": "Modern Farmhouse",
+      "garage": {
+        "type": "Attached",
+        "cars": 2,
+        "entry_location": "Side"
+      },
+      "additional_rooms": [],
+      "outdoor_features": [
+        "Front Porch"
+      ]
+    },
+    "area_breakdown": {
+      "total_m2": 166.9,
+      "first_floor_m2": 166.9,
+      "porch_front_m2": 9.8
+    },
+    "dimensions": {
+      "width_m": 14.94,
+      "depth_m": 19.51,
+      "max_ridge_height_m": 7.77
+    },
+    "foundation": [
+      "Basement"
+    ],
+    "roof": {
+      "primary_pitch": "12 on 12",
+      "secondary_pitch": "8 on 12",
+      "framing_type": "Stick"
+    }
+  },
+  {
+    "id": 19,
+    "title": "Cozy Two-Story Home Plan with Second-Level Bedrooms",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_19.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan19_1.gif",
+        "@/assets/images/plans/plan19_2.webp"
+      ]
+    },
+    "price_egp": 2600000,
+    "filters": {
+      "total_area_m2": 129.5,
+      "bedrooms": 3,
+      "bathrooms": 2.5,
+      "plan_type": "Single Family",
+      "floors": 2,
+      "style": "Traditional",
+      "garage": {
+        "type": "Attached",
+        "cars": 1,
+        "entry_location": "Front"
+      },
+      "additional_rooms": [],
+      "outdoor_features": []
+    },
+    "area_breakdown": {
+      "total_m2": 129.5,
+      "first_floor_m2": 66.3,
+      "second_floor_m2": 63.2
+    },
+    "dimensions": {
+      "width_m": 8.38,
+      "depth_m": 10.36,
+      "max_ridge_height_m": 8.79
+    },
+    "foundation": [
+      "Crawl",
+      "Slab"
+    ],
+    "roof": {
+      "primary_pitch": "9 on 12",
+      "framing_type": "Truss"
+    }
+  },
+  {
+    "id": 20,
+    "title": "Exclusive Modern Prairie House Plan with Optional Lower Level",
+    "images": {
+      "homes": [
+        "@/assets/images/homes/Picture_20.avif"
+      ],
+      "plans": [
+        "@/assets/images/plans/plan20_1.gif",
+        "@/assets/images/plans/plan20_2.gif",
+        "@/assets/images/plans/plan20_3.gif"
+      ]
+    },
+    "price_egp": 4600000,
+    "filters": {
+      "total_area_m2": 214.9,
+      "bedrooms": 6,
+      "bathrooms": 3.5,
+      "plan_type": "Single Family",
+      "floors": 2,
+      "style": "Modern Prairie",
+      "garage": {
+        "type": "Attached",
+        "cars": 2,
+        "entry_location": "Front"
+      },
+      "additional_rooms": [],
+      "outdoor_features": []
+    },
+    "area_breakdown": {
+      "total_m2": 214.9,
+      "first_floor_m2": 140.1,
+      "second_floor_m2": 74.8
+    },
+    "dimensions": {
+      "width_m": 14.63,
+      "depth_m": 14.94,
+      "max_ridge_height_m": 7.67
+    },
+    "foundation": [
+      "Basement",
+      "Slab"
+    ],
+    "roof": {
+      "primary_pitch": "4 on 12",
+      "framing_type": "Stick And Truss"
+    }
+  }
+]

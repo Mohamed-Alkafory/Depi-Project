@@ -7,6 +7,7 @@ import { Contact } from "../pages/Contact";
 import { Cart } from "../pages/Cart";
 import { Checkout } from "../pages/Checkout";
 import { Pricing } from "../pages/Pricing";
+import { Favorites } from "../pages/Favorites";
 import { NotFound } from "../pages/NotFound";
 import { ProtectedRoute } from "./ProtectedRoute";
 
@@ -19,6 +20,7 @@ export function AppRouter() {
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
         <Route path="pricing" element={<Pricing />} />
+        <Route path="favorites" element={<Favorites />} />
         <Route path="cart" element={<Cart />} />
 
         <Route
