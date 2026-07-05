@@ -1,3 +1,6 @@
+import ContactPage from "@/features/contact/components/ContactPage";
+
 export const Contact = () => {
-  return <div>Contact</div>;
+  return <ContactPage />;
 };
+
