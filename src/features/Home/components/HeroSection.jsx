@@ -10,11 +10,11 @@ function cn(...classes) {
 
 // Map nav links to section IDs
 const LINK_TO_SECTION = {
-  'Home': { id: 'home', scrollToTop: true },
-  'About Us': { id: 'about' },
-  'Services': { id: 'services' },
-  'Portfolio': { id: 'portfolio' },
-  'Process': { id: 'process' },
+  Home: { id: "home", scrollToTop: true },
+  "About Us": { id: "about" },
+  Services: { id: "services" },
+  Portfolio: { id: "portfolio" },
+  Process: { id: "process" },
 };
 
 export default function HeroSection() {
@@ -33,7 +33,7 @@ export default function HeroSection() {
   useEffect(() => {
     if (isScrolling) return;
 
-    const sectionIds = ['home', 'about', 'services', 'portfolio', 'process'];
+    const sectionIds = ["home", "about", "services", "portfolio", "process"];
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -49,11 +49,11 @@ export default function HeroSection() {
 
         if (mostVisible) {
           const nameMap = {
-            'home': 'Home',
-            'about': 'About Us',
-            'services': 'Services',
-            'portfolio': 'Portfolio',
-            'process': 'Process',
+            home: "Home",
+            about: "About Us",
+            services: "Services",
+            portfolio: "Portfolio",
+            process: "Process",
           };
           const newLink = nameMap[mostVisible];
           if (newLink) {
@@ -63,8 +63,8 @@ export default function HeroSection() {
       },
       {
         threshold: [0, 0.1, 0.2, 0.3, 0.5, 0.8, 1.0],
-        rootMargin: '-80px 0px -60% 0px',
-      }
+        rootMargin: "-80px 0px -60% 0px",
+      },
     );
 
     sectionIds.forEach((id) => {
@@ -85,11 +85,11 @@ export default function HeroSection() {
     setIsScrolling(true);
 
     if (target.scrollToTop) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       const el = document.getElementById(target.id);
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }
 
@@ -112,9 +112,7 @@ export default function HeroSection() {
         <div
           className={cn(
             "px-6 pt-6 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
-            loaded
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 -translate-y-8",
+            loaded ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8",
           )}
         >
           <nav className="w-[min(920px,90%)] mx-auto flex items-center justify-between border border-white/10 bg-white/10 backdrop-blur-xl rounded-full pl-5 pr-2 py-2 shadow-xl">
@@ -128,7 +126,7 @@ export default function HeroSection() {
               {NAV_LINKS.map((link) => (
                 <li key={link}>
                   <a
-                    href={`#${LINK_TO_SECTION[link]?.id || ''}`}
+                    href={`#${LINK_TO_SECTION[link]?.id || ""}`}
                     onClick={(e) => handleLinkClick(e, link)}
                     className={cn(
                       "block text-[14px] font-medium px-4 py-2.5 rounded-full whitespace-nowrap transition-colors duration-300 font-[var(--second-font)]",
@@ -162,7 +160,7 @@ export default function HeroSection() {
               Architecture &amp; Design
             </span>
 
-            <h1 className="mb-6 text-[52px] font-extrabold leading-[1.1] -tracking-[1px] text-white font-[var(--first-font)]">
+            <h1 className="page-title mb-6 text-[52px] font-extrabold leading-[1.1] -tracking-[1px] text-white font-[var(--first-font)]">
               Design Your{" "}
               <span className="text-[var(--brand-primary-light)]">
                 Dream Home
@@ -184,7 +182,12 @@ export default function HeroSection() {
               </button>
               <button className="group relative inline-flex items-center gap-3 px-6 py-3.5 rounded-full bg-transparent text-white border border-white/50 font-medium text-[14px] cursor-pointer overflow-hidden transition-colors duration-300 hover:text-[var(--brand-secondary)] font-[var(--second-font)]">
                 <span className="absolute inset-0 bg-white -translate-x-[101%] transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0" />
-                <span className="relative z-10" onClick={() => navigate('/cost-calculator')}>Calculate Cost</span>
+                <span
+                  className="relative z-10"
+                  onClick={() => navigate("/cost-calculator")}
+                >
+                  Calculate Cost
+                </span>
                 <span className="relative z-10 w-7 h-7 rounded-full border border-white/40 inline-flex items-center justify-center text-[13px] transition-transform group-hover:translate-x-0.5">
                   →
                 </span>
@@ -240,19 +243,14 @@ export default function HeroSection() {
                   ["24/7", "Support"],
                   ["100%", "Quality"],
                 ].map(([val, label], i) => (
-                  <>
-                    {i > 0 && (
-                      <div key={`d${i}`} className="w-px h-8 bg-white/10" />
-                    )}
-                    <div key={val} className="flex flex-col gap-1">
-                      <span className="text-[17px] font-bold text-white font-[var(--first-font)]">
-                        {val}
-                      </span>
-                      <span className="text-[10px] text-white/45 uppercase tracking-wider font-[var(--second-font)]">
-                        {label}
-                      </span>
-                    </div>
-                  </>
+                  <div key={val} className="flex flex-col gap-1">
+                    <span className="text-[17px] font-bold text-white font-[var(--first-font)]">
+                      {val}
+                    </span>
+                    <span className="text-[10px] text-white/45 uppercase tracking-wider font-[var(--second-font)]">
+                      {label}
+                    </span>
+                  </div>
                 ))}
               </div>
 

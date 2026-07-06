@@ -53,16 +53,14 @@ export default function AboutSection() {
             ))}
           </ul>
 
-          <a
-            href="#"
+          <Link
+            to="/about"
             className="group relative inline-flex items-center gap-2.5 self-start bg-[var(--brand-primary)] text-white font-semibold text-[14px] px-7 py-3.5 rounded-lg overflow-hidden transition-[gap] duration-300 hover:gap-3.5 font-[var(--second-font)]"
           >
             <span className="absolute inset-0 bg-[var(--brand-primary-hover)] -translate-x-[101%] transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0" />
-            <Link to="/About">
-              <span className="relative z-10">Homi Team</span>
-              <i className="fa-solid fa-arrow-right relative z-10" />
-            </Link>
-          </a>
+            <span className="relative z-10">Homi Team</span>
+            <i className="fa-solid fa-arrow-right relative z-10" />
+          </Link>
         </div>
 
         {/* Center - Images */}
