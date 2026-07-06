@@ -5,64 +5,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: oklch(0.922 0 0);
-  --code-bg: #f4f3ec;
-  --accent: oklch(0.97 0 0);
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
-  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-} */
-
 :root {
   --first-font: "Montserrat", sans-serif;
   --second-font: "Inter", sans-serif;
@@ -117,6 +59,47 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  /* ============================================
+   DARK INPUTS (Login, Auth pages)
+   ============================================ */
+  .dark-input:-webkit-autofill,
+  .dark-input:-webkit-autofill:hover,
+  .dark-input:-webkit-autofill:focus,
+  .dark-input:-webkit-autofill:active,
+  .dark-textarea:-webkit-autofill,
+  .dark-textarea:-webkit-autofill:hover,
+  .dark-textarea:-webkit-autofill:focus,
+  .dark-textarea:-webkit-autofill:active,
+  .dark-select:-webkit-autofill,
+  .dark-select:-webkit-autofill:hover,
+  .dark-select:-webkit-autofill:focus,
+  .dark-select:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.05) inset !important;
+    -webkit-text-fill-color: white !important;
+    caret-color: white;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  /* ============================================
+   LIGHT INPUTS (PlanForm, Admin pages)
+   ============================================ */
+  .light-input:-webkit-autofill,
+  .light-input:-webkit-autofill:hover,
+  .light-input:-webkit-autofill:focus,
+  .light-input:-webkit-autofill:active,
+  .light-textarea:-webkit-autofill,
+  .light-textarea:-webkit-autofill:hover,
+  .light-textarea:-webkit-autofill:focus,
+  .light-textarea:-webkit-autofill:active,
+  .light-select:-webkit-autofill,
+  .light-select:-webkit-autofill:hover,
+  .light-select:-webkit-autofill:focus,
+  .light-select:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+    -webkit-text-fill-color: #111827 !important;
+    caret-color: #111827;
+    transition: background-color 5000s ease-in-out 0s;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -151,6 +134,8 @@ body {
   min-height: 100svh;
 }
 
+/* ========== GLOBAL HEADINGS (محذوف — نستخدم classes بدلهم) ========== */
+/*
 h1,
 h2 {
   font-family: var(--heading);
@@ -165,6 +150,27 @@ h1 {
 }
 
 h2 {
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
+}
+*/
+
+/* ========== CLASSES بديلة ========== */
+.page-title {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
+}
+
+.section-title {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
   font-size: 24px;
   line-height: 118%;
   letter-spacing: -0.24px;
@@ -324,7 +330,7 @@ code {
   --sidebar-accent: oklch(0.95 0.03 195);
   --sidebar-accent-foreground: oklch(0.2 0 0);
   --sidebar-border: oklch(0.9 0.01 200);
-  --sidebar-ring: oklch(0.55 0.08 195);
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
@@ -449,6 +455,7 @@ code {
 .animation-delay-200 {
   animation-delay: 0.2s;
 }
+
 @keyframes stepFadeIn {
   from {
     opacity: 0;
@@ -462,5 +469,4 @@ code {
 
 .animate-step-fade {
   animation: stepFadeIn 0.35s ease-out;
-}
 }
