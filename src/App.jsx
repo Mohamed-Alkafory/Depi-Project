@@ -1,35 +1,3 @@
-// import { BrowserRouter } from "react-router-dom";
-// import { QueryClientProvider } from "@tanstack/react-query";
-// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-// import { Toaster } from "sonner";
-// import { useEffect } from "react";
-
-// import { queryClient } from "./lib/queryClient";
-// import { AppRouter } from "./router/AppRouter";
-// import { useAuthStore } from "./features/auth/store/authStore";
-
-// function App() {
-//   const initAuth = useAuthStore((s) => s.initAuth);
-
-//   // Initialize auth once on app start (idempotent)
-//   useEffect(() => {
-//     initAuth();
-//   }, [initAuth]);
-
-//   return (
-//     <QueryClientProvider client={queryClient}>
-//       <ReactQueryDevtools initialIsOpen={false} />
-
-//       <BrowserRouter>
-//         <AppRouter />
-//       </BrowserRouter>
-
-//       <Toaster richColors position="top-center" />
-//     </QueryClientProvider>
-//   );
-// }
-
-// export default App;
 // src/App.jsx
 import { BrowserRouter } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
