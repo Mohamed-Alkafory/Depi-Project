@@ -75,7 +75,63 @@ const Hero = () => {
   const triggerRef = useRef(null);
   const ctxRef = useRef(null);
   const currentFolderRef = useRef("desktop");
-  const { images, isReady, progress, folder } = useImagePreloader();
+  const hasRestoredRef = useRef(false);
+
+  const [showPoster, setShowPoster] = useState(true);
+
+  const { images, isReady, folder } = useImagePreloader();
+
+  // ✅ ارسم أي Frame على الـ Canvas
+  const drawFrame = (index) => {
+    const canvas = canvasRef.current;
+    const ctx = ctxRef.current;
+    if (!canvas || !ctx) return;
+
+    const img = images[Math.floor(index)];
+    if (!img || !img.complete) return;
+
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const dpr = window.devicePixelRatio || 1;
+
+    const hRatio = w / img.naturalWidth;
+    const vRatio = h / img.naturalHeight;
+    const ratio = Math.max(hRatio, vRatio);
+    const sw = img.naturalWidth * ratio;
+    const sh = img.naturalHeight * ratio;
+    const sx = (w - sw) / 2;
+    const sy = (h - sh) / 2;
+
+    ctx.clearRect(0, 0, w * dpr, h * dpr);
+    ctx.drawImage(
+      img,
+      0,
+      0,
+      img.naturalWidth,
+      img.naturalHeight,
+      sx,
+      sy,
+      sw,
+      sh,
+    );
+  };
+
+  // ✅ حدد حجم الـ Canvas
+  const sizeCanvas = () => {
+    const canvas = canvasRef.current;
+    const ctx = ctxRef.current;
+    if (!canvas || !ctx) return;
+
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const dpr = window.devicePixelRatio || 1;
+
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  };
 
   const [activeScene, setActiveScene] = useState(0);
   const [isFinal, setIsFinal] = useState(false);
@@ -83,18 +139,20 @@ const Hero = () => {
 
   useGSAP(() => {
     if (!isReady || images.length === 0) return;
-    if (triggerRef.current) {
-      triggerRef.current.kill();
-      triggerRef.current = null;
+
+    // لو الـ trigger موجود وشغال، متعملش جديد
+    if (triggerRef.current?.isActive?.()) {
+      ScrollTrigger.refresh();
+      return;
     }
 
     currentFolderRef.current = folder;
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     ctxRef.current = ctx;
-    frameRef.current = 0;
 
-    const dpr = window.devicePixelRatio || 1;
+    sizeCanvas();
 
     const sizeCanvas = () => {
       const w = window.innerWidth;
@@ -106,27 +164,35 @@ const Hero = () => {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    const drawFrame = (index) => {
-      const img = images[Math.floor(index)];
-      if (!img) return;
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      const hRatio = w / img.naturalWidth;
-      const vRatio = h / img.naturalHeight;
-      const ratio = Math.max(hRatio, vRatio);
-      const sw = img.naturalWidth * ratio;
-      const sh = img.naturalHeight * ratio;
-      const sx = (w - sw) / 2;
-      const sy = (h - sh) / 2;
-      ctx.clearRect(0, 0, w, h);
-      ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, sx, sy, sw, sh);
-    };
+    // ✅ احسب الـ progress المناسب من الـ scroll
+    const scrollEnd = folder === "mobile" ? 3500 : 8000;
+    const totalScroll = scrollEnd + window.innerHeight; // pin adds viewport height
+    let initialProgress = 0;
 
-    sizeCanvas();
-    drawFrame(0);
+    if (savedScroll > 0 && !hasRestoredRef.current) {
+      // الـ scroll داخل الـ pinned area
+      if (savedScroll <= totalScroll) {
+        initialProgress = Math.min(savedScroll / scrollEnd, 1);
+      } else {
+        initialProgress = 1; // خلصنا الـ animation
+      }
+      hasRestoredRef.current = true;
+    }
 
+    frameRef.current = initialProgress * (HERO_CONFIG.frameCount - 1);
+
+    // ارسم الـ Frame الأولي
+    drawFrame(frameRef.current);
+
+    // اخفي الـ Poster
+    requestAnimationFrame(() => {
+      setTimeout(() => setShowPoster(false), 100);
+    });
+
+    // Resize handler
     const onResize = () => {
-      const newFolder = window.innerWidth <= HERO_CONFIG.breakpoint ? "mobile" : "desktop";
+      const newFolder =
+        window.innerWidth <= HERO_CONFIG.breakpoint ? "mobile" : "desktop";
       if (newFolder !== currentFolderRef.current) {
         window.location.reload();
         return;
@@ -144,7 +210,7 @@ const Hero = () => {
     const trigger = ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
-      end: folder === "mobile" ? "+=3500" : "+=8000",
+      end: `+=${scrollEnd}`,
       pin: true,
       scrub: 1.5,
       onUpdate: (self) => {
@@ -169,12 +235,22 @@ const Hero = () => {
 
     triggerRef.current = trigger;
 
+    // ✅ لو فيه saved scroll، حرك الـ trigger للمكان ده
+    if (savedScroll > 0 && initialProgress > 0 && initialProgress < 1) {
+      // ScrollTrigger لسه مش محسوب صح — استنى شوية
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          ScrollTrigger.refresh();
+          // حرك الـ scroll للمكان الصح
+          const targetScroll = initialProgress * scrollEnd;
+          window.scrollTo(0, targetScroll);
+        });
+      });
+    }
+
     return () => {
       window.removeEventListener("resize", onResize);
-      if (triggerRef.current) {
-        triggerRef.current.kill();
-        triggerRef.current = null;
-      }
+      // ❌ متقتلش الـ trigger هنا
     };
   }, [images, isReady, folder]);
 
