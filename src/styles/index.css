@@ -8,9 +8,9 @@
 :root {
   --first-font: "Manrope", sans-serif;
   --second-font: "Manrope", sans-serif;
-  --brand-primary: #19C7C2;
-  --brand-primary-hover: #15A8A4;
-  --brand-primary-light: #4FE3DA;
+  --brand-primary: #19c7c2;
+  --brand-primary-hover: #15a8a4;
+  --brand-primary-light: #4fe3da;
   --brand-secondary: #1a1a1a;
   --brand-secondary-light: #333333;
   --body-bg: #f8f9fa;
@@ -416,7 +416,7 @@ code {
   }
   body {
     @apply text-foreground;
-    background-color: #0B0F14;
+    background-color: #0b0f14;
   }
   html {
     @apply font-sans;
@@ -509,7 +509,6 @@ code {
   animation: stepFadeIn 0.35s ease-out;
 }
 
-<<<<<<< HEAD
 /* ================================================================
    COST CALCULATOR — PREMIUM UI ANIMATIONS
    ================================================================ */
@@ -859,47 +858,48 @@ code {
 
 .cc-icon-bounce:hover {
   animation: ccIconBounce 0.6s ease-in-out;
-=======
-.text-gradient-glow {
-  background: linear-gradient(135deg, #19C7C2, #4FE3DA);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 12px rgba(25, 199, 194, 0.25));
-}
-
-.text-gradient-teal {
-  background: linear-gradient(135deg, #19C7C2, #4FE3DA);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.font-playfair {
-  font-family: "Playfair Display", Georgia, serif;
-}
-
-.badge-dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(25, 199, 194, 0.4);
-  box-shadow: 0 0 8px rgba(25, 199, 194, 0.3);
-  margin-right: 10px;
-  flex-shrink: 0;
-}
-
-@keyframes shimmer-glow {
-  0%, 85%, 100% {
-    filter: drop-shadow(0 0 8px rgba(25, 199, 194, 0.2));
+  .text-gradient-glow {
+    background: linear-gradient(135deg, #19c7c2, #4fe3da);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 12px rgba(25, 199, 194, 0.25));
   }
-  92% {
-    filter: drop-shadow(0 0 18px rgba(25, 199, 194, 0.5)) brightness(1.08);
-  }
-}
 
-.shimmer-glow {
-  animation: shimmer-glow 6s ease-in-out 1 forwards;
->>>>>>> e643cd17d834f31dda68613b868f138e2b3c008d
+  .text-gradient-teal {
+    background: linear-gradient(135deg, #19c7c2, #4fe3da);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .font-playfair {
+    font-family: "Playfair Display", Georgia, serif;
+  }
+
+  .badge-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(25, 199, 194, 0.4);
+    box-shadow: 0 0 8px rgba(25, 199, 194, 0.3);
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+
+  @keyframes shimmer-glow {
+    0%,
+    85%,
+    100% {
+      filter: drop-shadow(0 0 8px rgba(25, 199, 194, 0.2));
+    }
+    92% {
+      filter: drop-shadow(0 0 18px rgba(25, 199, 194, 0.5)) brightness(1.08);
+    }
+  }
+
+  .shimmer-glow {
+    animation: shimmer-glow 6s ease-in-out 1 forwards;
+  }
 }
