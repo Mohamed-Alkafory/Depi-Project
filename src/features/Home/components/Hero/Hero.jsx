@@ -116,7 +116,7 @@ const Hero = () => {
     );
   };
 
-  // ✅ حدد حجم الـ Canvas
+  // ✅ حدد حجم الـ Canvas (النسخة الوحيدة المستخدمة في كل مكان)
   const sizeCanvas = () => {
     const canvas = canvasRef.current;
     const ctx = ctxRef.current;
@@ -152,17 +152,12 @@ const Hero = () => {
     const ctx = canvas.getContext("2d");
     ctxRef.current = ctx;
 
+    // ✅ استخدام sizeCanvas الأصلية بس (مفيش تعريف تاني هنا)
     sizeCanvas();
 
-    const sizeCanvas = () => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      canvas.style.width = `${w}px`;
-      canvas.style.height = `${h}px`;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
+    // ✅ اقرأ آخر موضع scroll محفوظ (لو موجود) عشان نرجّع المستخدم لمكانه
+    // عدّلي المصدر ده لو عندك طريقة تانية بتحفظي بيها الـ scroll
+    const savedScroll = Number(sessionStorage.getItem("heroScrollPos")) || 0;
 
     // ✅ احسب الـ progress المناسب من الـ scroll
     const scrollEnd = folder === "mobile" ? 3500 : 8000;
@@ -220,6 +215,9 @@ const Hero = () => {
         const frame = p * (HERO_CONFIG.frameCount - 1);
         frameRef.current = frame;
         drawFrame(frame);
+
+        // ✅ احفظي موضع الـ scroll الحالي (لو حابة تستخدميه بعدين)
+        sessionStorage.setItem("heroScrollPos", String(window.scrollY));
 
         if (p >= finalZoneStart) {
           setIsFinal(true);
