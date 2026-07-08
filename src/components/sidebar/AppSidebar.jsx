@@ -56,7 +56,7 @@ export default function AppSidebar({ onClose }) {
         className="min-h-0! h-full w-fit"
         style={{ "--sidebar-width": EXPANDED }}
       >
-        <div className="shrink-0 overflow-hidden" style={widthStyle}>
+        <div className={`shrink-0 ${collapsed ? "overflow-visible" : "overflow-hidden"}`} style={widthStyle}>
           <Sidebar
             collapsible="none"
             className="flex h-full w-full! flex-col bg-white text-gray-800 border-r border-gray-200"
@@ -110,7 +110,7 @@ export default function AppSidebar({ onClose }) {
                           collapsed={collapsed}
                         />
                       )}
-                      <SidebarMenu className="gap-px! px-2">
+                      <SidebarMenu className="gap-0! px-2">
                         {section.items.map((item) => (
                           <SidebarNavLink
                             key={item.to}
@@ -136,7 +136,7 @@ export default function AppSidebar({ onClose }) {
                             collapsed={collapsed}
                           />
                         )}
-                        <SidebarMenu className="gap-px! px-2">
+                        <SidebarMenu className="gap-0! px-2">
                           {section.items.map((item) => (
                             <SidebarNavLink
                               key={item.to}
@@ -160,7 +160,7 @@ export default function AppSidebar({ onClose }) {
                               collapsed={collapsed}
                             />
                           )}
-                          <SidebarMenu className="gap-px! px-2">
+                          <SidebarMenu className="gap-0! px-2">
                             {section.items.map((item) => (
                               <SidebarNavLink
                                 key={item.to}

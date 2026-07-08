@@ -1,4 +1,24 @@
-import { ArrowRight } from "lucide-react";
+import {
+  Ruler,
+  Maximize,
+  Building2,
+  Anvil,
+  Package,
+  Layers,
+  Shovel,
+  BrickWall,
+  HardHat,
+} from "lucide-react";
+import CalculateButton from "./CalculateButton";
+
+const MATERIAL_ICONS = {
+  iron: { icon: Anvil, label: "Iron Price" },
+  cement: { icon: Package, label: "Cement Price" },
+  gravel: { icon: Layers, label: "Gravel Price" },
+  sand: { icon: Shovel, label: "Sand Price" },
+  brick: { icon: BrickWall, label: "Brick Price" },
+  labor: { icon: HardHat, label: "Labor Price" },
+};
 
 export default function BasicDataSection({
   dimensions,
@@ -12,6 +32,9 @@ export default function BasicDataSection({
   onCalculate,
   area,
 }) {
+  const inputClass =
+    "peer w-full bg-transparent px-11 py-3 text-gray-900 placeholder:text-gray-400 outline-none transition-all";
+
   return (
     <div className="space-y-6">
       {/* Land Dimensions */}
@@ -20,8 +43,13 @@ export default function BasicDataSection({
           Land Dimensions
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          {/* Length */}
+          <div className="group relative rounded-2xl border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md focus-within:border-teal-500 focus-within:shadow-[0_8px_30px_-12px_rgba(13,148,136,0.35)] focus-within:ring-2 focus-within:ring-teal-500/20">
+            <Ruler
+              size={18}
+              className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-teal-600"
+            />
+            <label className="block text-xs font-medium text-gray-500 mb-0.5 pt-3 px-11 transition-colors group-focus-within:text-teal-600">
               Length (m)
             </label>
             <input
@@ -35,11 +63,17 @@ export default function BasicDataSection({
                   length: e.target.value,
                 }))
               }
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all placeholder:text-gray-400"
+              className={inputClass}
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+
+          {/* Width */}
+          <div className="group relative rounded-2xl border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md focus-within:border-teal-500 focus-within:shadow-[0_8px_30px_-12px_rgba(13,148,136,0.35)] focus-within:ring-2 focus-within:ring-teal-500/20">
+            <Maximize
+              size={18}
+              className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-teal-600"
+            />
+            <label className="block text-xs font-medium text-gray-500 mb-0.5 pt-3 px-11 transition-colors group-focus-within:text-teal-600">
               Width (m)
             </label>
             <input
@@ -53,11 +87,17 @@ export default function BasicDataSection({
                   width: e.target.value,
                 }))
               }
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all placeholder:text-gray-400"
+              className={inputClass}
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+
+          {/* Floors */}
+          <div className="group relative rounded-2xl border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md focus-within:border-teal-500 focus-within:shadow-[0_8px_30px_-12px_rgba(13,148,136,0.35)] focus-within:ring-2 focus-within:ring-teal-500/20">
+            <Building2
+              size={18}
+              className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-teal-600"
+            />
+            <label className="block text-xs font-medium text-gray-500 mb-0.5 pt-3 px-11 transition-colors group-focus-within:text-teal-600">
               Floors
             </label>
             <input
@@ -66,7 +106,7 @@ export default function BasicDataSection({
               min="0"
               value={floors}
               onChange={(e) => setFloors(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all placeholder:text-gray-400"
+              className={inputClass}
             />
           </div>
         </div>
@@ -96,37 +136,48 @@ export default function BasicDataSection({
           Material Prices
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Object.entries(prices).map(([key, value]) => (
-            <div key={key}>
-              <label className="block text-sm font-medium text-gray-700 mb-1 capitalize">
-                {key} Price
-              </label>
-              <input
-                type="number"
-                placeholder={`${key} price`}
-                min="0"
-                value={value}
-                onChange={(e) =>
-                  setPrices((p) => ({
-                    ...p,
-                    [key]: e.target.value === "" ? "" : Number(e.target.value),
-                  }))
-                }
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all placeholder:text-gray-400"
-              />
-            </div>
-          ))}
+          {Object.entries(prices).map(([key, value]) => {
+            const IconComp = MATERIAL_ICONS[key]?.icon ?? Package;
+            const displayLabel = MATERIAL_ICONS[key]?.label ?? `${key} Price`;
+            return (
+              <div
+                key={key}
+                className="group relative rounded-2xl border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md focus-within:border-teal-500 focus-within:shadow-[0_8px_30px_-12px_rgba(13,148,136,0.35)] focus-within:ring-2 focus-within:ring-teal-500/20"
+              >
+                <IconComp
+                  size={18}
+                  className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-teal-600"
+                />
+                <label className="block text-xs font-medium capitalize text-gray-500 mb-0.5 pt-3 px-11 transition-colors group-focus-within:text-teal-600">
+                  {displayLabel}
+                </label>
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  placeholder={`${key} price`}
+                  value={value === "" ? "" : String(value)}
+                  onChange={(e) => {
+                    const raw = e.target.value;
+                    if (raw === "") {
+                      setPrices((p) => ({ ...p, [key]: "" }));
+                      return;
+                    }
+                    const normalized = raw.replace(/[^\d.]/g, "");
+                    const num = Number(normalized);
+                    if (!Number.isNaN(num)) {
+                      setPrices((p) => ({ ...p, [key]: num }));
+                    }
+                  }}
+                  className={inputClass}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
 
       {/* Calculate Button */}
-      <button
-        onClick={onCalculate}
-        className="w-full bg-teal-600 hover:bg-teal-700 text-white py-4 rounded-xl font-bold text-lg transition-colors flex items-center justify-center gap-2"
-      >
-        Calculate Cost
-        <ArrowRight size={20} />
-      </button>
+      <CalculateButton onClick={onCalculate} />
     </div>
   );
 }

@@ -273,9 +273,9 @@ export default function AdminOrders() {
                                 : "bg-green-50 text-green-700 border-green-200"
                             }`}
                           >
-                            <option value="unpaid">❌ Unpaid</option>
-                            <option value="paid">✅ Paid</option>
-                            <option value="refunded">↩️ Refunded</option>
+                            <option value="unpaid">  Unpaid</option>
+                            <option value="paid">  Paid</option>
+                            <option value="refunded">  Refunded</option>
                           </select>
                         </td>
                         <td className="px-6 py-4">
