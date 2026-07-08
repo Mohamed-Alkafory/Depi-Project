@@ -1,17 +1,15 @@
-import HeroSection from "../features/home/components/HeroSection";
+import Hero from "@/features/Home/components/Hero/Hero";
 import HowItWorksSection from "../features/home/components/HowItWorksSection";
 import AboutSection from "../features/home/components/AboutSection";
 import ServicesSection from "../features/home/components/ServicesSection";
-import FooterSection from "../features/home/components/FooterSection";
 
 export default function Home() {
   return (
     <>
-      <HeroSection />
+      <Hero />
       <AboutSection />
       <ServicesSection />
       <HowItWorksSection />
-      <FooterSection />
     </>
   );
 }
