@@ -12,7 +12,7 @@ export const About = () => {
       <AboutIntro />
       <HomiAboutSection />
       <WhyChooseHOMI />
-      <StackingCardsParallax />
+      {/* <StackingCardsParallax /> */}
       <IntroSection />
       <HomiTeamSection />
       <HomiCTASection />
