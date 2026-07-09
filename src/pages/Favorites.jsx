@@ -4,6 +4,7 @@ import { useFavoritesQuery } from "@/features/favorites/hooks/useFavorites";
 import HousePlanCard from "@/components/houses/HousePlanCard";
 import { motion } from "framer-motion";
 import { Heart, Search } from "lucide-react"; // or any icon you have
+import favBackground from "@/assets/images/favBackground.png";
 
 export function Favorites() {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ export function Favorites() {
         <div
           className="relative flex h-[240px] w-full flex-col items-center justify-center overflow-hidden rounded-2xl sm:h-[280px] sm:rounded-3xl lg:h-[320px]"
           style={{
-            backgroundImage: "url(/src/assets/images/favBackground.png)",
+            backgroundImage:{favBackground},
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
