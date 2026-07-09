@@ -57,7 +57,7 @@ export function Favorites() {
         <div
           className="relative flex h-[240px] w-full flex-col items-center justify-center overflow-hidden rounded-2xl sm:h-[280px] sm:rounded-3xl lg:h-[320px]"
           style={{
-            backgroundImage:{favBackground},
+            backgroundImage:`url(${favBackground}`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
