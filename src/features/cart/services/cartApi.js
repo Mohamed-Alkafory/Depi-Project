@@ -5,7 +5,7 @@ export const cartApi = {
     const { data, error } = await supabase
       .from("cart")
       .select(
-        "id, plan_id, created_at, plans(id, title, price, cover_image, slug, status)",
+        "id, plan_id, created_at, plans(id, title, price, cover_image, slug, status, area, bedrooms, bathrooms, floors)",
       )
       .order("created_at", { ascending: false });
     if (error) throw error;

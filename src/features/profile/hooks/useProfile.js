@@ -80,25 +80,32 @@ export function useProfile() {
     error,
   } = useQuery({
     queryKey: ["profile", userId],
+    // queryFn: async () => {
+    //   try {
+    //     const data = await profileApi.getProfile(userId);
+    //     // Update authStore with profile
+    //     setProfile(data);
+    //     return data;
+    //   } catch (err) {
+    //     if (err.code === "PGRST116") {
+    //       const newProfile = await profileApi.createProfile({
+    //         id: userId,
+    //         email: user.email,
+    //         full_name: user.email,
+    //         role: "user",
+    //       });
+    //       setProfile(newProfile);
+    //       return newProfile;
+    //     }
+    //     throw err;
+    //   }
+    // },
     queryFn: async () => {
-      try {
-        const data = await profileApi.getProfile(userId);
-        // Update authStore with profile
-        setProfile(data);
-        return data;
-      } catch (err) {
-        if (err.code === "PGRST116") {
-          const newProfile = await profileApi.createProfile({
-            id: userId,
-            email: user.email,
-            full_name: user.email,
-            role: "user",
-          });
-          setProfile(newProfile);
-          return newProfile;
-        }
-        throw err;
-      }
+      // 🐛 SECURITY FIX: كان فيه fallback هنا بيعمل insert يدوي بـ role: "user"
+      // ثابتة لو الـ profile مش موجود — ده كان بيتجاوز الـ admin whitelist بالكامل
+      // (لو الـ database trigger اتأخر لأي سبب). دلوقتي بنعتمد على الـ trigger
+      // بس كمصدر وحيد لإنشاء الـ profile، ومنعملش أي insert من الـ client خالص.
+      return await profileApi.getProfile(userId);
     },
     enabled: !!userId,
   });
