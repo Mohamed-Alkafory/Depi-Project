@@ -250,7 +250,7 @@ import {
 import { useCategories } from "@/features/plans/hooks/useCategories";
 import { planFormSchema } from "@/features/plans/schemas/planFormSchema";
 
-import { STEPS, buildDefaultValues } from "./constants";
+import { STEPS, buildDefaultValues } from "./Constants";
 import { Stepper } from "./Stepper";
 import { usePlanFormMedia } from "./hooks/usePlanFormMedia";
 import { BasicInfoStep } from "./steps/BasicInfoStep";
