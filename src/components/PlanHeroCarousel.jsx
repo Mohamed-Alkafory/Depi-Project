@@ -7,13 +7,18 @@ import { useNavigate } from "react-router-dom";
 const STRIPS = 8;
 const EASE = [0.65, 0, 0.35, 1];
 
+const clip = (s) =>
+  `inset(0 ${100 - (s + 1) * (100 / STRIPS)}% 0 ${s * (100 / STRIPS)}%)`;
+
 const stripVariants = (s) => ({
-  enter: (dir) => ({ y: dir > 0 ? "102%" : "-102%" }),
+  enter: (dir) => ({ clipPath: clip(s), y: dir > 0 ? "102%" : "-102%" }),
   center: {
+    clipPath: clip(s),
     y: "0%",
     transition: { duration: 0.7, ease: EASE, delay: s * 0.055 },
   },
   exit: (dir) => ({
+    clipPath: clip(s),
     y: dir > 0 ? "-102%" : "102%",
     transition: { duration: 0.7, ease: EASE, delay: s * 0.055 },
   }),
@@ -41,41 +46,44 @@ export default function PlanHeroCarousel({ slides = [] }) {
   if (!slide) return null;
 
   return (
-    <div className="relative flex h-[65vh] w-full items-center justify-center overflow-hidden bg-gray-50 py-6">
-      {/* Card Container - أصغر + rounded أقل */}
-      <div className="relative h-full w-[min(1000px,94%)] overflow-hidden rounded-2xl bg-gray-200 shadow-xl">
-        {/* Sliced Image Animation */}
+    <div className="bg-gray-50 py-4 sm:py-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative flex h-[35vh] min-h-[240px] w-full items-center justify-center overflow-hidden rounded-2xl bg-gray-200 sm:h-[40vh] sm:min-h-[300px] lg:h-[45vh]">
+        {/* Image */}
         <AnimatePresence initial={false} custom={dir}>
           <motion.div
             key={index}
-            className="absolute inset-0 flex"
+            className="absolute inset-0"
+            style={{ willChange: "transform" }}
             custom={dir}
             initial="enter"
             animate="center"
             exit="exit"
           >
             {Array.from({ length: STRIPS }).map((_, s) => (
-              <div key={s} className="h-full flex-1 overflow-hidden">
-                <motion.div
-                  className="h-full w-full"
-                  custom={dir}
-                  variants={stripVariants(s)}
-                  style={{
-                    backgroundImage: `url(${slide.image})`,
-                    backgroundSize: `${STRIPS * 100}% 100%`,
-                    backgroundPosition: `${(s / (STRIPS - 1)) * 100}% 50%`,
-                  }}
-                />
-              </div>
+              <motion.div
+                key={s}
+                className="absolute inset-0"
+                custom={dir}
+                variants={stripVariants(s)}
+                style={{
+                  backgroundImage: `url(${slide.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  transform: "translateZ(0)",
+                  backfaceVisibility: "hidden",
+                }}
+              />
             ))}
           </motion.div>
         </AnimatePresence>
 
-        {/* Gradient Overlay - أخف */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
+        {/* Gradient Overlay */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/40" />
 
         {/* Content - Bottom Left */}
-        <div className="absolute bottom-5 left-6 text-white">
+        <div className="absolute bottom-3 left-4 text-white sm:bottom-5 sm:left-6">
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.div
               key={index}
@@ -90,22 +98,22 @@ export default function PlanHeroCarousel({ slides = [] }) {
               <p className="text-[10px] uppercase tracking-[0.3em] text-white/70">
                 {slide.tag}
               </p>
-              <h3 className="mt-1 text-2xl md:text-3xl font-semibold tracking-tight">
+              <h3 className="mt-1 text-xl font-semibold tracking-tight sm:text-2xl md:text-3xl">
                 {slide.title}
               </h3>
-              <p className="mt-1 text-lg font-medium text-teal-400">
+              <p className="mt-1 text-base font-medium text-teal-400 sm:text-lg">
                 {slide.price}
               </p>
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* View Plan Button - Center Bottom */}
+        {/* View Plan Button - Top Right */}
         {slide.link && (
-          <div className="absolute bottom-5 left-1/2 -translate-x-1/2">
+          <div className="absolute right-4 top-3">
             <button
               onClick={() => navigate(slide.link)}
-              className="px-5 py-2 bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white rounded-full text-sm font-medium transition-colors border border-white/20"
+              className="px-3 py-1.5 bg-white/20 hover:bg-white/35 backdrop-blur-sm text-white rounded-full text-[11px] font-medium transition-colors border border-white/25 sm:px-5 sm:py-2 sm:text-sm"
             >
               View Plan →
             </button>
@@ -113,27 +121,27 @@ export default function PlanHeroCarousel({ slides = [] }) {
         )}
 
         {/* Navigation Arrows - Bottom Right */}
-        <div className="absolute bottom-5 right-6 flex items-center gap-2">
+        <div className="absolute bottom-3 right-4 flex items-center gap-1.5 sm:bottom-5 sm:right-6 sm:gap-2">
           <button
             type="button"
             aria-label="Previous slide"
             onClick={() => paginate(-1)}
-            className="grid size-8 place-items-center rounded-full border border-white/25 text-white/80 backdrop-blur-sm transition-colors hover:bg-white hover:text-black"
+            className="grid size-7 place-items-center rounded-full border border-white/25 text-white/80 backdrop-blur-sm transition-colors hover:bg-white hover:text-black sm:size-8"
           >
-            <ChevronLeft className="size-4" />
+            <ChevronLeft className="size-3 sm:size-4" />
           </button>
           <button
             type="button"
             aria-label="Next slide"
             onClick={() => paginate(1)}
-            className="grid size-8 place-items-center rounded-full border border-white/25 text-white/80 backdrop-blur-sm transition-colors hover:bg-white hover:text-black"
+            className="grid size-7 place-items-center rounded-full border border-white/25 text-white/80 backdrop-blur-sm transition-colors hover:bg-white hover:text-black sm:size-8"
           >
-            <ChevronRight className="size-4" />
+            <ChevronRight className="size-3 sm:size-4" />
           </button>
         </div>
 
         {/* Dots - Top Left */}
-        <div className="absolute left-6 top-5 flex gap-1.5">
+        <div className="absolute left-4 top-3 flex gap-1.5 sm:left-6 sm:top-5">
           {slides.map((_, i) => (
             <button
               key={i}
@@ -149,6 +157,7 @@ export default function PlanHeroCarousel({ slides = [] }) {
           ))}
         </div>
       </div>
-    </div>
+        </div>
+      </div>
   );
 }

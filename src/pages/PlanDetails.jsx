@@ -1,13 +1,15 @@
 // src/pages/PlanDetails.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { usePlan } from "@/features/plans/hooks/usePlan";
 import {
   useIsFavorite,
   useToggleFavorite,
 } from "@/features/favorites/hooks/useFavorites";
 import { useAddToCart } from "@/features/cart/hooks/useCart";
-import PlanSpecs from "@/features/plans/components/PlanSpecs";
+import PlanDetailsGallery from "@/features/plans/components/PlanDetailsGallery";
+import { toast } from "sonner";
 import {
   Heart,
   ShoppingCart,
@@ -22,11 +24,28 @@ import {
   Bath,
   Maximize,
   Layers,
-  Check,
   MapPin,
+  ArrowRight,
+  Ruler,
+  BedDouble,
+  Building2,
+  Car,
   Calendar,
-  Home,
+  Tag,
+  CircleDot,
+  HelpCircle,
 } from "lucide-react";
+
+const SPECS_META = [
+  { key: "area", label: "Area", value: (p) => (p.area ? `${p.area} m²` : null), icon: Ruler },
+  { key: "bedrooms", label: "Bedrooms", value: (p) => p.bedrooms || null, icon: BedDouble },
+  { key: "bathrooms", label: "Bathrooms", value: (p) => p.bathrooms || null, icon: Bath },
+  { key: "floors", label: "Floors", value: (p) => p.floors || null, icon: Building2 },
+  { key: "garage", label: "Garage", value: (p) => (p.garage ? `${p.garage} cars` : null), icon: Car },
+  { key: "year_built", label: "Year Built", value: (p) => p.year_built || null, icon: Calendar },
+  { key: "style", label: "Style", value: (p) => p.style || null, icon: Tag },
+  { key: "status", label: "Status", value: (p) => (p.status ? p.status.replace("_", " ") : null), icon: CircleDot },
+];
 
 function formatPrice(price) {
   if (!price) return "EGP 0";
@@ -91,7 +110,7 @@ export default function PlanDetails() {
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      alert("Link copied to clipboard!");
+      toast.success("Link copied to clipboard!");
     } catch (err) {
       console.error("Failed to copy:", err);
     }
@@ -132,7 +151,12 @@ export default function PlanDetails() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Back Button */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+      <motion.div
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+      >
         <button
           onClick={() => navigate("/plans")}
           className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-800 transition-colors bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm"
@@ -140,250 +164,224 @@ export default function PlanDetails() {
           <ArrowLeft size={16} />
           Back to Plans
         </button>
-      </div>
+      </motion.div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          {/* Left: Images (3 columns) */}
-          <div className="lg:col-span-3 space-y-4">
-            {/* Main Image */}
-            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-gray-200 shadow-xl group">
-              {status.badge && (
-                <div
-                  className={`absolute top-5 left-5 z-10 px-4 py-2 rounded-full text-sm font-bold ${status.badge.class}`}
-                >
-                  {status.badge.text}
-                </div>
-              )}
+      {/* Gallery Section – Full Width */}
+      <motion.div
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <PlanDetailsGallery
+          images={allImages}
+          mainImage={mainImage}
+          onImageChange={setMainImage}
+          onLightboxOpen={() => setLightbox(true)}
+          statusBadge={status.badge}
+        />
+      </motion.div>
 
-              {allImages[mainImage]?.image_url ? (
-                <>
-                  <img
-                    src={allImages[mainImage].image_url}
-                    alt={plan.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      {/* ===== Details Section – Two-Column Layout ===== */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 lg:mt-12 pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-[7fr_3fr] gap-8">
 
-                  {/* Expand button */}
-                  <button
-                    onClick={() => setLightbox(true)}
-                    className="absolute top-5 right-5 p-3 bg-white/90 backdrop-blur-sm hover:bg-white text-gray-700 rounded-2xl shadow-lg opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0"
-                  >
-                    <Maximize size={18} />
-                  </button>
+          {/* ===== LEFT COLUMN (70%) ===== */}
+          <div className="space-y-8">
 
-                  {/* Navigation */}
-                  {allImages.length > 1 && (
-                    <>
-                      <button
-                        onClick={prevImage}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/90 backdrop-blur-sm hover:bg-white text-gray-700 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all"
-                      >
-                        <ChevronLeft size={20} />
-                      </button>
-                      <button
-                        onClick={nextImage}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/90 backdrop-blur-sm hover:bg-white text-gray-700 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all"
-                      >
-                        <ChevronRight size={20} />
-                      </button>
-                    </>
-                  )}
-
-                  {/* Counter */}
-                  <div className="absolute bottom-5 right-5 px-4 py-2 bg-black/60 backdrop-blur-sm text-white text-sm font-medium rounded-full">
-                    {mainImage + 1} / {allImages.length}
-                  </div>
-                </>
-              ) : (
-                <div className="flex items-center justify-center h-full text-gray-400">
-                  <Home size={48} />
-                </div>
-              )}
-            </div>
-
-            {/* Thumbnails */}
-            {allImages.length > 1 && (
-              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-                {allImages.map((img, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setMainImage(index)}
-                    className={`flex-shrink-0 w-20 h-20 rounded-2xl overflow-hidden transition-all duration-300 ${
-                      index === mainImage
-                        ? "ring-3 ring-teal-500 ring-offset-2 shadow-lg scale-105"
-                        : "opacity-50 hover:opacity-80 hover:scale-105"
-                    }`}
-                  >
-                    <img
-                      src={img.image_url}
-                      alt={`${plan.title} - ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Right: Info (2 columns) */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Title Card */}
-            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-              <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
-                <MapPin size={14} />
-                <span>{plan.categories?.name}</span>
-                <span className="text-gray-300">•</span>
-                <span>{plan.style}</span>
-              </div>
-
-              <h1 className="text-2xl lg:text-xl font-semibold text-gray-900 leading-tight mb-4">
+            {/* ---- About This Plan Card ---- */}
+            <motion.div
+              className="bg-white rounded-[18px] shadow-[0_4px_24px_-6px_rgba(0,0,0,0.06)] p-6 sm:p-8 lg:p-10"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-teal-600 mb-3">
+                About This Plan
+              </p>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight mb-4">
                 {plan.title}
               </h1>
+              <p className="text-gray-600 leading-[1.8] text-[15px]">
+                {plan.long_description || plan.short_description || "No description available."}
+              </p>
+            </motion.div>
 
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold text-teal-600">
+            {/* ---- Specifications Card ---- */}
+            <motion.div
+              className="bg-white rounded-[18px] shadow-[0_4px_24px_-6px_rgba(0,0,0,0.06)] p-6 sm:p-8 lg:p-10"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+            >
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-teal-600 mb-6">
+                Specifications
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-0">
+                {SPECS_META.map((spec, i) => {
+                  const val = spec.value(plan);
+                  if (!val) return null;
+                  const Icon = spec.icon;
+                  return (
+                    <div key={spec.key}>
+                      <div className={`flex items-center gap-4 py-4 ${i > 0 ? "border-t border-gray-100" : ""}`}>
+                        <div className="size-11 rounded-xl border border-gray-200 flex items-center justify-center flex-shrink-0 bg-white">
+                          <Icon size={18} className="text-teal-600" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-gray-400">
+                            {spec.label}
+                          </p>
+                          <p className="text-base font-bold text-gray-900 capitalize truncate">
+                            {val}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+            {/* ---- Bottom CTA Banner ---- */}
+            <motion.div
+              className="rounded-[18px] bg-gradient-to-br from-teal-600 to-teal-700 shadow-[0_8px_32px_-8px_rgba(13,148,136,0.35)] p-6 sm:p-8 lg:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
+            >
+              <div className="flex items-start gap-4">
+                <div className="size-12 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
+                  <HelpCircle size={24} className="text-white" />
+                </div>
+                <div>
+                  <p className="text-white font-bold text-lg sm:text-xl">Need modifications?</p>
+                  <p className="text-teal-100 text-sm leading-relaxed mt-1">
+                    Customize this plan to fit your needs.
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => navigate("/contact")}
+                className="flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-white text-teal-700 font-bold text-sm transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex-shrink-0"
+              >
+                Start Modification
+                <ArrowRight size={18} />
+              </button>
+            </motion.div>
+
+          </div>
+
+          {/* ===== RIGHT COLUMN (30%) – Sticky Purchase Card ===== */}
+          <motion.div
+            className="lg:sticky lg:top-6 self-start space-y-4"
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+          >
+            <div className="bg-white rounded-[18px] shadow-[0_4px_24px_-6px_rgba(0,0,0,0.06)] p-6">
+
+              {/* Category + Type */}
+              <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+                <span className="font-medium text-gray-500">{plan.categories?.name || "Property"}</span>
+                <span className="text-gray-300">•</span>
+                <span>{plan.style || "Plan"}</span>
+              </div>
+
+              {/* Plan Name */}
+              <h2 className="text-lg font-bold text-gray-900 mb-3 leading-snug">
+                {plan.title}
+              </h2>
+
+              {/* Price */}
+              <div className="flex items-baseline gap-2 mb-1">
+                <span className="text-2xl font-bold text-teal-600">
                   {formatPrice(plan.price)}
                 </span>
                 {plan.original_price && plan.original_price > plan.price && (
-                  <span className="text-lg text-gray-400 line-through">
+                  <span className="text-sm text-gray-400 line-through">
                     {formatPrice(plan.original_price)}
                   </span>
                 )}
               </div>
-            </div>
 
-            {/* Quick Stats */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center gap-3">
-                <div className="w-10 h-10 bg-teal-50 rounded-xl flex items-center justify-center">
-                  <Maximize size={18} className="text-teal-600" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Area</p>
-                  <p className="font-bold text-gray-900">{plan.area} m²</p>
-                </div>
-              </div>
-              <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center gap-3">
-                <div className="w-10 h-10 bg-teal-50 rounded-xl flex items-center justify-center">
-                  <Bed size={18} className="text-teal-600" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Bedrooms</p>
-                  <p className="font-bold text-gray-900">{plan.bedrooms}</p>
-                </div>
-              </div>
-              <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center gap-3">
-                <div className="w-10 h-10 bg-teal-50 rounded-xl flex items-center justify-center">
-                  <Bath size={18} className="text-teal-600" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Bathrooms</p>
-                  <p className="font-bold text-gray-900">{plan.bathrooms}</p>
-                </div>
-              </div>
-              <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center gap-3">
-                <div className="w-10 h-10 bg-teal-50 rounded-xl flex items-center justify-center">
-                  <Layers size={18} className="text-teal-600" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Floors</p>
-                  <p className="font-bold text-gray-900">{plan.floors}</p>
-                </div>
-              </div>
-            </div>
+              {/* Divider */}
+              <div className="border-t border-gray-100 my-4" />
 
-            {/* Actions */}
-            <div className="space-y-3">
+              {/* Highlights */}
+              <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-400 mb-3">
+                Property Highlights
+              </p>
+              <div className="space-y-2.5">
+                {[
+                  { icon: Maximize, label: "Area", value: `${plan.area || "—"} m²` },
+                  { icon: Bed, label: "Bedrooms", value: plan.bedrooms || "—" },
+                  { icon: Bath, label: "Bathrooms", value: plan.bathrooms || "—" },
+                  { icon: Layers, label: "Floors", value: plan.floors || "—" },
+                ].map((h) => (
+                  <div key={h.label} className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div className="size-7 rounded-md bg-teal-50 flex items-center justify-center">
+                        <h.icon size={13} className="text-teal-600" />
+                      </div>
+                      <span className="text-sm text-gray-500">{h.label}</span>
+                    </div>
+                    <span className="text-sm font-semibold text-gray-900">{h.value}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Divider */}
+              <div className="border-t border-gray-100 my-4" />
+
+              {/* Add to Cart */}
               {status.canAddToCart ? (
                 <button
                   onClick={() => addToCart(plan)}
-                  className={`w-full flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] ${status.buttonClass}`}
+                  className="w-full flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-bold text-base transition-all transform hover:scale-[1.02] active:scale-[0.98] bg-teal-600 hover:bg-teal-700 text-white shadow-lg shadow-teal-600/30"
                 >
-                  <ShoppingCart size={22} />
-                  {status.buttonText}
+                  <ShoppingCart size={20} />
+                  Add this plan
                 </button>
               ) : (
                 <button
                   disabled
-                  className={`w-full py-4 px-6 rounded-2xl font-bold text-lg ${status.buttonClass}`}
+                  className="w-full py-4 px-6 rounded-2xl font-bold text-base bg-gray-200 text-gray-400 cursor-not-allowed"
                 >
                   {status.buttonText}
                 </button>
               )}
 
-              <div className="flex gap-3">
+              {/* Save / Share */}
+              <div className="flex gap-3 mt-4">
                 {status.canFavorite && (
                   <button
                     onClick={() => toggleFavorite(plan)}
-                    className={`flex-1 flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl border-2 font-semibold transition-all ${
+                    className={`flex-1 flex items-center justify-center gap-2 py-3 px-3 rounded-2xl border-2 font-semibold text-sm transition-all ${
                       isFav
                         ? "border-red-200 bg-red-50 text-red-500"
                         : "border-gray-200 hover:border-gray-300 text-gray-600 bg-white"
                     }`}
                   >
-                    <Heart size={20} fill={isFav ? "currentColor" : "none"} />
+                    <Heart size={17} fill={isFav ? "currentColor" : "none"} />
                     {isFav ? "Saved" : "Save"}
                   </button>
                 )}
-
                 <button
                   onClick={handleShare}
-                  className="flex-1 flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl border-2 border-gray-200 hover:border-gray-300 text-gray-600 font-semibold transition-all bg-white"
+                  className="flex-1 flex items-center justify-center gap-2 py-3 px-3 rounded-2xl border-2 border-gray-200 hover:border-gray-300 text-gray-600 font-semibold text-sm transition-all bg-white"
                 >
-                  <Share2 size={20} />
+                  <Share2 size={17} />
                   Share
                 </button>
               </div>
             </div>
+          </motion.div>
 
-            {/* Description */}
-            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-3">
-                About this plan
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                {plan.long_description ||
-                  plan.short_description ||
-                  "No description available."}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Features Section */}
-        {plan.plan_features?.length > 0 && (
-          <div className="mt-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Features</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {plan.plan_features.map((f) => (
-                <div
-                  key={f.id}
-                  className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center gap-3 hover:shadow-md transition-shadow"
-                >
-                  <div className="w-8 h-8 bg-teal-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Check size={16} className="text-teal-600" />
-                  </div>
-                  <span className="text-sm font-medium text-gray-700">
-                    {f.feature}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Full Specifications */}
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Specifications
-          </h2>
-          <div className="bg-white rounded-3xl p-6 lg:p-8 shadow-sm border border-gray-100">
-            <PlanSpecs plan={plan} />
-          </div>
         </div>
       </div>
 

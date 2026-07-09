@@ -553,3 +553,31 @@ code {
 .shimmer-glow {
   animation: shimmer-glow 6s ease-in-out 1 forwards;
 }
+
+.cc-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+  animation: cc-ripple-anim 0.65s ease-out forwards;
+}
+
+@keyframes gallery-fade-in {
+  from { opacity: 0; transform: scale(1.03); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.gallery-fade-in {
+  animation: gallery-fade-in 0.4s ease-out;
+}
+
+@keyframes cc-ripple-anim {
+  from {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
