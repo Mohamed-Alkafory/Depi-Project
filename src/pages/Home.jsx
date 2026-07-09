@@ -6,6 +6,7 @@ import TestimonialSection from "@/features/Home/components/TestimonialSection";
 import PropertyCarousel from "@/features/Home/components/PropertyCarousel";
 import planImg from "/src/assets/images/plans/1.png";
 import homeImg from "/src/assets/images/homes/Picture_1.avif";
+import CtaSection from "@/features/Home/components/CtaSection";
 
 const fadeUp = {
   initial: { opacity: 0, y: 60 },
@@ -27,7 +28,7 @@ export default function Home() {
         bottomImage="/src/assets/images/homes/Picture_4.avif"
         backgroundColor="#f6f8fa"
       />
-      
+
       <BeforeAfterSection
         image={planImg}
         imageB={homeImg}
@@ -36,12 +37,10 @@ export default function Home() {
         description="Design, visualize, and plan every detail of your future home from the first sketch to construction."
       />
       <motion.div {...fadeUp}>
-        <PropertyCarousel
-          backgroundColor="#ffffff"
-          sectionPadding="100px 0"
-        />
+        <PropertyCarousel backgroundColor="#ffffff" sectionPadding="100px 0" />
       </motion.div>
       <StackingCardsParallax />
+      <CtaSection />
     </>
   );
 }

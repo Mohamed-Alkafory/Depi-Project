@@ -15,28 +15,28 @@ const cards = [
     title: "Blueprint & Planning",
     description:
       "Our architects create precise plans and technical drawings to ensure every detail is thoughtfully designed before construction begins.",
-    color: "#F7FAFC",
+    color: "#F0F9F8",
     image: "/about/story_2.jpg",
   },
   {
     title: "3D Visualization",
     description:
       "We transform architectural drawings into realistic 3D visualizations, allowing you to experience your future home before it is built.",
-    color: "#EEF6F6",
+    color: "#DDF0EE",
     image: "/about/story_3.jpg",
   },
   {
     title: "Construction",
     description:
       "Every phase is supervised with precision, ensuring quality craftsmanship from the foundation to the final finishing touches.",
-    color: "#DFF5F2",
+    color: "#C3E8E3",
     image: "/about/story_4.jpg",
   },
   {
     title: "Your Dream Home",
     description:
       "The journey ends with a timeless home designed to inspire comfort, elegance, and unforgettable everyday living.",
-    color: "#cdebf1",
+    color: "#A8DDD6",
     image: "/about/story_5.jpg",
   },
 ];
@@ -104,9 +104,15 @@ export default function StackingCardsParallax() {
   });
 
   return (
-    <section id="how-it-works" ref={containerRef} className="relative bg-white pb-16 sm:pb-20 lg:pb-24">
+    // ✅ قللنا الـ padding العلوي والسفلي (كان pt-20/28 و pb-16/20/24)
+    // عشان السكشن يبقى قريب من اللي فوقه وتحته، مش سايب فراغ كبير
+    <section
+      id="how-it-works"
+      ref={containerRef}
+      className="relative bg-white pb-4 sm:pb-6"
+    >
       {/* Section Header */}
-      <div className="mx-auto max-w-4xl px-4 pb-8 pt-20 text-center sm:pt-28">
+      <div className="mx-auto max-w-4xl px-4 pb-8 pt-8 text-center sm:pt-10">
         <div className="mb-5 flex items-center justify-center gap-4">
           <div className="h-px w-16 bg-teal-500/40" />
 
@@ -118,8 +124,8 @@ export default function StackingCardsParallax() {
         </div>
 
         <h2
-          className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl"
-          style={{ color: "#0F172A" }}
+          className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl"
+          style={{ color: "#1E293B" }}
         >
           Your Journey
           <br />

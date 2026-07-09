@@ -239,7 +239,7 @@ export default function HomiCTASection() {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
                 className="group relative overflow-hidden rounded-full bg-[#14B8A6] px-10 py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#0D9488] hover:shadow-[0_0_30px_rgba(20,184,166,0.3)] mt-3"
-                onClick={() => navigate("/Pricing")}
+                onClick={() => navigate("/plans")}
               >
                 Start Planning
               </motion.button>

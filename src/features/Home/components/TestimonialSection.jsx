@@ -1,12 +1,8 @@
 // src/components/TestimonialSection.jsx
 "use client";
 
-import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
+import { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const STATS = [
   {
@@ -37,87 +33,106 @@ const TestimonialSection = ({
   topImage = "/images/work-1.jpg",
   bottomImage = "/images/work-2.jpg",
   backgroundColor = "#f8f9fa",
+  threshold = 0.3,
 }) => {
   const sectionRef = useRef(null);
-  const statsRef = useRef(null);
-  const quoteRef = useRef(null);
   const imagesRef = useRef(null);
+  const quoteRef = useRef(null);
+  const statsRef = useRef(null);
 
-  useGSAP(
-    () => {
-      const section = sectionRef.current;
-      if (!section) return;
+  const [hasAnimated, setHasAnimated] = useState(false);
 
-      // Animate images
-      gsap.from(imagesRef.current?.children || [], {
-        y: 60,
+  const runAnimation = () => {
+    if (hasAnimated) return;
+    setHasAnimated(true);
+
+    const tl = gsap.timeline();
+
+    // ✅ 1. كلهم يظهروا في نفس الوقت (opacity: 1)
+    tl.to([imagesRef.current, quoteRef.current, statsRef.current], {
+      opacity: 1,
+      duration: 0,
+    });
+
+    // ✅ 2. الصور تطلع من الشمال
+    tl.from(
+      imagesRef.current?.children || [],
+      {
+        x: -80,
         opacity: 0,
         duration: 1,
         stagger: 0.2,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-      });
+      },
+      0,
+    ); // ← يبدأ من وقت 0 (مع الكل)
 
-      // Animate quote
-      gsap.from(quoteRef.current, {
-        y: 40,
+    // ✅ 3. الـ Quote يطلع من اليمين
+    tl.from(
+      quoteRef.current,
+      {
+        x: 80,
         opacity: 0,
         duration: 1,
-        delay: 0.3,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-      });
+      },
+      0,
+    ); // ← يبدأ من وقت 0 (مع الكل)
 
-      // Counter animation for stats
-      const statElements = statsRef.current?.querySelectorAll(".stat-number");
-      statElements?.forEach((el) => {
-        const target = parseInt(el.dataset.value, 10);
-        const suffix = el.dataset.suffix || "";
-
-        gsap.fromTo(
-          el,
-          { innerText: 0 },
-          {
-            innerText: target,
-            duration: 2,
-            ease: "power2.out",
-            snap: { innerText: 1 },
-            scrollTrigger: {
-              trigger: el,
-              start: "top 85%",
-              toggleActions: "play none none none",
-            },
-            onUpdate: function () {
-              el.innerText = Math.round(this.targets()[0].innerText) + suffix;
-            },
-          },
-        );
-      });
-
-      // Animate stat labels
-      gsap.from(statsRef.current?.children || [], {
-        y: 30,
+    // ✅ 4. الـ Stats تطلع من تحت
+    tl.from(
+      statsRef.current?.children || [],
+      {
+        y: 40,
         opacity: 0,
         duration: 0.8,
         stagger: 0.15,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: statsRef.current,
-          start: "top 85%",
-          toggleActions: "play none none none",
+      },
+      0,
+    ); // ← يبدأ من وقت 0 (مع الكل)
+
+    // ✅ 5. الـ Counter يعد (يشتغل معاهم)
+    const statElements = statsRef.current?.querySelectorAll(".stat-number");
+    statElements?.forEach((el) => {
+      const target = parseInt(el.dataset.value, 10);
+      const suffix = el.dataset.suffix || "";
+      el.innerText = "0" + suffix;
+
+      const obj = { val: 0 };
+
+      tl.to(
+        obj,
+        {
+          val: target,
+          duration: 2.5,
+          ease: "power2.out",
+          onUpdate: () => {
+            el.innerText = Math.round(obj.val) + suffix;
+          },
         },
-      });
-    },
-    { scope: sectionRef },
-  );
+        0,
+      ); // ← يبدأ من وقت 0 (مع الكل)
+    });
+  };
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          runAnimation();
+          observer.disconnect();
+        }
+      },
+      { threshold },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [hasAnimated, threshold]);
 
   return (
     <section ref={sectionRef} className="w-full" style={{ backgroundColor }}>
@@ -125,7 +140,7 @@ const TestimonialSection = ({
         {/* Top: Images + Quote */}
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Images Column */}
-          <div ref={imagesRef} className="flex flex-col gap-4">
+          <div ref={imagesRef} className="flex flex-col gap-4 opacity-0">
             <div className="overflow-hidden rounded-2xl">
               <img
                 src={topImage}
@@ -143,7 +158,10 @@ const TestimonialSection = ({
           </div>
 
           {/* Quote Column */}
-          <div ref={quoteRef} className="flex flex-col justify-center">
+          <div
+            ref={quoteRef}
+            className="flex flex-col justify-center opacity-0"
+          >
             <blockquote>
               <p
                 className="text-2xl font-medium leading-relaxed text-[var(--paragraph)] sm:text-3xl lg:text-4xl"
@@ -182,7 +200,7 @@ const TestimonialSection = ({
         {/* Bottom: Stats */}
         <div
           ref={statsRef}
-          className="mt-16 grid grid-cols-1 gap-8 border-t border-[var(--border)] pt-16 sm:grid-cols-3 sm:gap-12 lg:mt-24 lg:pt-24"
+          className="mt-16 grid grid-cols-1 gap-8 border-t border-[var(--border)] pt-16 sm:grid-cols-3 sm:gap-12 lg:mt-24 lg:pt-24 opacity-0"
         >
           {STATS.map((stat) => (
             <div key={stat.label} className="text-center">

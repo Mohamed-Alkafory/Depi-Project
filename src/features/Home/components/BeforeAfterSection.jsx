@@ -1,4 +1,3 @@
-// src/HomiTeamSection/components/BeforeAfterSection.jsx
 "use client";
 
 import { useRef, useState, useCallback, useEffect } from "react";
@@ -157,7 +156,6 @@ const BeforeAfterSection = ({
     handleMove(e.touches[0].clientX);
   };
 
-  // Auto-animate on load
   useEffect(() => {
     let start = 30;
     let end = 70;
@@ -188,38 +186,45 @@ const BeforeAfterSection = ({
   }, [isDragging]);
 
   return (
-    <section id="services" className="relative w-full bg-white py-20 sm:py-24 lg:py-28">
+    <section
+      id="services"
+      className="relative w-full bg-white py-16 sm:py-20 lg:py-24"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+        {/* ✅ Header — زي الصورة (خطين + badge في النص) */}
         <div className="mb-10 flex flex-col items-center text-center sm:mb-12">
           <motion.span
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-3 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.15em] text-[var(--brand-primary)]"
-          >
-            <span className="inline-block h-px w-8 bg-[var(--brand-primary)]" />
-            {badge}
-            <span className="inline-block h-px w-8 bg-[var(--brand-primary)]" />
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            className="max-w-4xl text-3xl font-bold leading-[1.15] -tracking-[0.5px] text-[var(--brand-primary)] sm:text-4xl"
-            style={{ fontFamily: "var(--first-font)" }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-4 flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#008080]"
           >
-            {title}
-          </motion.h2>
-          <motion.p
+            <span className="inline-block h-px w-12 bg-[#008080]/40" />
+            {badge}
+            <span className="inline-block h-px w-12 bg-[#008080]/40" />
+          </motion.span>
+
+          <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            className="max-w-4xl text-3xl font-bold leading-[1.15] tracking-tight text-[#008080] sm:text-4xl lg:text-5xl"
+            style={{
+              fontFamily: "var(--font-heading), Montserrat, sans-serif",
+            }}
+          >
+            {title}
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--paragraph)] sm:text-lg"
-            style={{ fontFamily: "var(--second-font)" }}
+            className="mt-4 max-w-2xl text-base leading-relaxed text-[#6c757d] sm:text-lg"
+            style={{ fontFamily: "var(--font-body), Manrope, sans-serif" }}
           >
             {description}
           </motion.p>
@@ -227,7 +232,7 @@ const BeforeAfterSection = ({
 
         {/* Before/After Container */}
         <motion.div
-          initial={{ opacity: 0, y: 50, scale: 0.97 }}
+          initial={{ opacity: 0, y: 40, scale: 0.98 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
@@ -240,7 +245,6 @@ const BeforeAfterSection = ({
           onTouchMove={onTouchMove}
           onTouchEnd={onMouseUp}
         >
-          {/* After Image (full background) */}
           <img
             src={imageB}
             alt="After"
@@ -248,7 +252,6 @@ const BeforeAfterSection = ({
             draggable={false}
           />
 
-          {/* Before Image (clipped) */}
           <div
             className="absolute inset-0 h-full overflow-hidden"
             style={{ width: `${split}%` }}
@@ -262,7 +265,6 @@ const BeforeAfterSection = ({
             />
           </div>
 
-          {/* Divider Line */}
           <div
             className="absolute top-0 bottom-0 z-10 w-[3px] cursor-ew-resize"
             style={{
@@ -274,7 +276,6 @@ const BeforeAfterSection = ({
             onMouseDown={onMouseDown}
             onTouchStart={onMouseDown}
           >
-            {/* Knob */}
             <div
               className="absolute top-1/2 left-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full shadow-lg sm:h-14 sm:w-14"
               style={{
@@ -287,7 +288,7 @@ const BeforeAfterSection = ({
                 height="18"
                 viewBox="0 0 18 18"
                 fill="none"
-                className="text-[var(--brand-primary)]"
+                className="text-[#008080]"
               >
                 <path
                   d="M6 3L2 9L6 15"
@@ -307,14 +308,13 @@ const BeforeAfterSection = ({
             </div>
           </div>
 
-          {/* Labels */}
           <div className="absolute bottom-6 left-6 z-10">
-            <span className="inline-block rounded-full border border-white/20 bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[var(--brand-primary)] shadow-lg shadow-black/5 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-white hover:shadow-xl hover:shadow-black/10 sm:text-sm">
+            <span className="inline-block rounded-full border border-white/20 bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#008080] shadow-lg backdrop-blur-sm sm:text-sm">
               {labelBefore}
             </span>
           </div>
           <div className="absolute bottom-6 right-6 z-10">
-            <span className="inline-block rounded-full border border-white/20 bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[var(--brand-primary)] shadow-lg shadow-black/5 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-white hover:shadow-xl hover:shadow-black/10 sm:text-sm">
+            <span className="inline-block rounded-full border border-white/20 bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#008080] shadow-lg backdrop-blur-sm sm:text-sm">
               {labelAfter}
             </span>
           </div>
@@ -322,7 +322,7 @@ const BeforeAfterSection = ({
 
         {/* Steps */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
@@ -334,14 +334,18 @@ const BeforeAfterSection = ({
               {STEPS.map((step, i) => (
                 <motion.div
                   key={step.title}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.25 + i * 0.08 }}
+                  transition={{
+                    duration: 0.5,
+                    ease: [0.16, 1, 0.3, 1],
+                    delay: 0.25 + i * 0.08,
+                  }}
                   className="flex flex-col items-center text-center"
                 >
                   <div
-                    className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-white text-[var(--brand-primary)] sm:h-16 sm:w-16"
+                    className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-white text-[#008080] sm:h-16 sm:w-16"
                     style={{
                       border: "2px solid #e0f0f0",
                       boxShadow: "0 2px 12px rgba(0,128,128,0.08)",
@@ -350,16 +354,17 @@ const BeforeAfterSection = ({
                     {step.icon}
                   </div>
                   <h4
-                    className="mt-3 text-xs font-semibold text-[var(--brand-primary)] sm:text-sm"
-                    style={{ fontFamily: "var(--first-font)" }}
+                    className="mt-3 text-xs font-semibold text-[#008080] sm:text-sm"
+                    style={{
+                      fontFamily: "var(--font-heading), Montserrat, sans-serif",
+                    }}
                   >
                     {step.title}
                   </h4>
                   <p
-                    className="mt-1 text-[10px] leading-tight sm:text-xs"
+                    className="mt-1 text-[10px] leading-tight text-[#6c757d] sm:text-xs"
                     style={{
-                      color: "var(--paragraph)",
-                      fontFamily: "var(--second-font)",
+                      fontFamily: "var(--font-body), Manrope, sans-serif",
                     }}
                   >
                     {step.description}
