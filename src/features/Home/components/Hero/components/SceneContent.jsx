@@ -57,19 +57,19 @@ export function SceneContent({ scene }) {
         </RevealLine>
       </motion.div>
 
-      <motion.div variants={fadeVariants} className="mt-3">
+      <motion.div variants={fadeVariants} className="mt-2 sm:mt-3">
         {scene.heading.map((line, i) => (
           <RevealLine key={i} index={i}>
-            <h1 className="text-[clamp(2.375rem,4.5vw,3.625rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+            <h1 className="text-[clamp(1.75rem,5.5vw,3.625rem)] sm:text-[clamp(2.375rem,4.5vw,3.625rem)] font-bold leading-[1.08] tracking-[-0.02em]">
               <HeadingLineWords words={line} />
             </h1>
           </RevealLine>
         ))}
       </motion.div>
 
-      <motion.div variants={fadeVariants} className="mt-[22px]">
+      <motion.div variants={fadeVariants} className="mt-3 sm:mt-[22px]">
         <RevealLine index={scene.heading.length}>
-          <p className="max-w-[520px] font-light leading-relaxed text-[#c9ced6] text-sm sm:text-base" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <p className="max-w-[85vw] font-light leading-relaxed text-[#c9ced6] text-sm sm:max-w-[520px] sm:text-base" style={{ fontFamily: "'Inter', sans-serif" }}>
             {scene.description.split("\n").map((line, i) => (
               <span key={i}>
                 {i > 0 && <br />}
@@ -81,11 +81,11 @@ export function SceneContent({ scene }) {
       </motion.div>
 
       {scene.cta && (
-        <motion.div variants={fadeVariants} className="mt-6">
+        <motion.div variants={fadeVariants} className="mt-4 sm:mt-6">
           <RevealLine index={scene.heading.length + 2}>
             <Link
               to={scene.ctaTo || "/"}
-              className="group inline-flex items-center gap-3 rounded-full bg-[#19C7C2] px-8 py-4 text-sm font-semibold text-white shadow-lg shadow-[#19C7C2]/20 transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-xl hover:shadow-[#19C7C2]/30 active:scale-100"
+              className="group inline-flex items-center gap-3 rounded-full bg-[#19C7C2] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#19C7C2]/20 transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-xl hover:shadow-[#19C7C2]/30 active:scale-100 sm:px-8 sm:py-4"
             >
               {scene.cta}
               <ArrowRight
@@ -117,19 +117,19 @@ export function FinalSceneContent({ scene }) {
         </RevealLine>
       </motion.div>
 
-      <motion.div variants={fadeVariants} className="mt-3">
+      <motion.div variants={fadeVariants} className="mt-2 sm:mt-3">
         {scene.heading.map((line, i) => (
           <RevealLine key={i} index={i}>
-            <h1 className="text-[clamp(2.375rem,4.5vw,3.625rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+            <h1 className="text-[clamp(1.75rem,5.5vw,3.625rem)] sm:text-[clamp(2.375rem,4.5vw,3.625rem)] font-bold leading-[1.08] tracking-[-0.02em]">
               <HeadingLineWords words={line} />
             </h1>
           </RevealLine>
         ))}
       </motion.div>
 
-      <motion.div variants={fadeVariants} className="mt-[22px]">
+      <motion.div variants={fadeVariants} className="mt-3 sm:mt-[22px]">
         <RevealLine index={scene.heading.length}>
-          <p className="max-w-[520px] font-light leading-relaxed text-[#c9ced6] text-sm sm:text-base" style={{ fontFamily: "'Inter', sans-serif" }}>
+          <p className="max-w-[85vw] font-light leading-relaxed text-[#c9ced6] text-sm sm:max-w-[520px] sm:text-base" style={{ fontFamily: "'Inter', sans-serif" }}>
             {scene.description.split("\n").map((line, i) => (
               <span key={i}>
                 {i > 0 && <br />}
@@ -141,23 +141,28 @@ export function FinalSceneContent({ scene }) {
       </motion.div>
 
       {scene.buttons && (
-        <motion.div variants={fadeVariants} className="mt-6">
+        <motion.div variants={fadeVariants} className="mt-4 sm:mt-6">
           <RevealLine index={scene.heading.length + 2}>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
               {scene.buttons.map((btn, idx) => (
                 <Link
                   key={btn.label}
                   to={btn.to}
                   className={
                     idx === 0
-                      ? "group inline-flex items-center gap-3 rounded-full bg-[#19C7C2] px-8 py-4 text-sm font-semibold text-white shadow-lg shadow-[#19C7C2]/20 transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-xl hover:shadow-[#19C7C2]/30 active:scale-100"
-                      : "group inline-flex items-center gap-3 rounded-full border border-white/30 px-8 py-4 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-white/60 active:scale-100"
+                      ? "group inline-flex items-center justify-center gap-3 rounded-full bg-[#19C7C2] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#19C7C2]/20 transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-xl hover:shadow-[#19C7C2]/30 active:scale-100 sm:px-8 sm:py-4"
+                      : "group relative inline-flex items-center justify-center gap-3 rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] active:scale-100 sm:px-8 sm:py-4 overflow-hidden"
                   }
                 >
-                  {btn.label}
+                  {idx !== 0 && (
+                    <span className="absolute inset-0 -translate-x-full rounded-full bg-white transition-transform duration-[500ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0" />
+                  )}
+                  <span className={idx === 0 ? "" : "relative z-10 transition-colors duration-300 group-hover:text-[#1a1a1a]"}>
+                    {btn.label}
+                  </span>
                   <ArrowRight
                     size={16}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
+                    className={idx === 0 ? "transition-transform duration-300 group-hover:translate-x-1" : "relative z-10 transition-colors duration-300 group-hover:text-[#1a1a1a] group-hover:translate-x-1"}
                   />
                 </Link>
               ))}

@@ -104,9 +104,9 @@ export default function StackingCardsParallax() {
   });
 
   return (
-    <section ref={containerRef} className="relative bg-white">
+    <section id="how-it-works" ref={containerRef} className="relative bg-white pb-16 sm:pb-20 lg:pb-24">
       {/* Section Header */}
-      <div className="mx-auto max-w-4xl px-4 pt-8  text-center">
+      <div className="mx-auto max-w-4xl px-4 pb-8 pt-20 text-center sm:pt-28">
         <div className="mb-5 flex items-center justify-center gap-4">
           <div className="h-px w-16 bg-teal-500/40" />
 

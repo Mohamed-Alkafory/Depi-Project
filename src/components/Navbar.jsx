@@ -1,4 +1,5 @@
 // src/components/layout/Navbar.jsx
+import { motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import {
@@ -44,7 +45,7 @@ export default function Navbar() {
     { to: "/about", label: "About" },
     { to: "/#how-it-works", label: "How It Works" },
     { to: "/#services", label: "Services" },
-    { to: "/plans", label: "Pricing" },
+    { to: "/#plans", label: "Plans" },
     { to: "/contact", label: "Contact" },
   ];
 
@@ -68,6 +69,27 @@ export default function Navbar() {
     if (path.startsWith("/#")) return false;
     return location.pathname === path;
   };
+
+  const handleHashClick = (to, e) => {
+    if (to.startsWith("/#")) {
+      const id = to.replace("/#", "");
+      const el = document.getElementById(id);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
+  useEffect(() => {
+    const hash = location.hash.replace("#", "");
+    if (hash) {
+      const el = document.getElementById(hash);
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 200);
+      }
+    }
+  }, [location]);
 
   useEffect(() => {
     setMobileMenuOpen(false);
@@ -108,7 +130,7 @@ export default function Navbar() {
         ([entry]) => {
           setPastHero(!entry.isIntersecting);
         },
-        { threshold: 0 },
+        { rootMargin: "-20% 0px 0px 0px", threshold: 0 },
       );
 
       observerRef.current.observe(hero);
@@ -155,7 +177,10 @@ export default function Navbar() {
 
   return (
     <>
-      <nav
+      <motion.nav
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
         className={`fixed top-0 left-0 z-50 w-full transition-all duration-[400ms] ${
           pastHero
             ? "shadow-[0_8px_30px_rgba(0,0,0,0.06)] backdrop-blur-[10px]"
@@ -168,31 +193,54 @@ export default function Navbar() {
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-20 items-center justify-between">
-            <Link to="/" className="flex-shrink-0">
-              <img
-                src="/Homi logo2.png"
-                alt="HOMI"
-                className="h-[42px] w-auto object-contain"
-                onError={(e) => {
-                  e.target.style.display = "none";
-                }}
-              />
-            </Link>
+            <motion.div
+              initial={{ x: -40, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            >
+              <Link to="/" className="flex-shrink-0">
+                <img
+                  src="/Homi logo2.png"
+                  alt="HOMI"
+                  className="h-[42px] w-auto object-contain"
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                  }}
+                />
+              </Link>
+            </motion.div>
 
-            <div className="hidden md:flex items-center gap-8">
-              {navLinks.map((link) => (
-                <Link
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
+              className="hidden md:flex items-center gap-8"
+            >
+              {navLinks.map((link, i) => (
+                <motion.div
                   key={link.to}
-                  to={link.to}
-                  className={`${linkClass(link.to)} ${hoverUnderline}`}
+                  initial={{ y: -16, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: 0.35 + i * 0.08 }}
                 >
-                  {link.label}
-                  {activeUnderline(link.to)}
-                </Link>
+                  <Link
+                    to={link.to}
+                    onClick={(e) => handleHashClick(link.to, e)}
+                    className={`${linkClass(link.to)} ${hoverUnderline}`}
+                  >
+                    {link.label}
+                    {activeUnderline(link.to)}
+                  </Link>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
-            <div className="hidden md:flex items-center gap-4">
+            <motion.div
+              initial={{ x: 40, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+              className="hidden md:flex items-center gap-4"
+            >
               {isAuthenticated ? (
                 <div className="relative" ref={userMenuRef}>
                   <button
@@ -275,18 +323,24 @@ export default function Navbar() {
                   </button>
                 </div>
               )}
-            </div>
+            </motion.div>
 
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`md:hidden flex items-center justify-center rounded-xl p-2.5 transition-all duration-300 ${
-                pastHero
-                  ? "text-[#1F2937] hover:bg-gray-100"
-                  : "text-white/90 hover:bg-white/10"
-              }`}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: 0.45 }}
             >
-              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className={`md:hidden flex items-center justify-center rounded-xl p-2.5 transition-all duration-300 ${
+                  pastHero
+                    ? "text-[#1F2937] hover:bg-gray-100"
+                    : "text-white/90 hover:bg-white/10"
+                }`}
+              >
+                {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+              </button>
+            </motion.div>
           </div>
         </div>
 
@@ -311,7 +365,10 @@ export default function Navbar() {
               <Link
                 key={link.to}
                 to={link.to}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => {
+                  setMobileMenuOpen(false);
+                  handleHashClick(link.to, e);
+                }}
                 className={`text-2xl font-medium tracking-wide transition-colors duration-300 ${
                   isActive(link.to)
                     ? "text-[#008080]"
@@ -371,7 +428,7 @@ export default function Navbar() {
             )}
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       <AuthModal
         isOpen={isModalOpen}

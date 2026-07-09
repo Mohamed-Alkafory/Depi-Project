@@ -85,13 +85,15 @@ const Hero = () => {
   const drawFrame = (index) => {
     const canvas = canvasRef.current;
     const ctx = ctxRef.current;
-    if (!canvas || !ctx) return;
+    const container = containerRef.current;
+    if (!canvas || !ctx || !container) return;
 
     const img = images[Math.floor(index)];
     if (!img || !img.complete) return;
 
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+    const rect = container.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
     const dpr = window.devicePixelRatio || 1;
 
     const hRatio = w / img.naturalWidth;
@@ -122,8 +124,9 @@ const Hero = () => {
     const ctx = ctxRef.current;
     if (!canvas || !ctx) return;
 
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+    const rect = containerRef.current.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
     const dpr = window.devicePixelRatio || 1;
 
     canvas.style.width = w + "px";
