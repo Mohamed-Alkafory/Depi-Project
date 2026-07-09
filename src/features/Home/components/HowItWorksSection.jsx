@@ -10,10 +10,10 @@ function SectionEyebrow({ children }) {
 
 export default function HowItWorksSection() {
   return (
-    <section id="services" className="bg-[var(--body-bg)] py-24 overflow-hidden">
+    <section id="services" className="bg-[var(--body-bg)] py-24 pb-28 sm:pb-24 overflow-hidden">
       <div className="max-w-[1280px] mx-auto px-16">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-20 sm:mb-16">
           <SectionEyebrow>How It Works</SectionEyebrow>
           <h2 className="text-[36px] font-bold leading-[1.15] -tracking-[0.5px] text-[var(--heading)] font-[var(--first-font)]">
             Your Dream Home In{" "}

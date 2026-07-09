@@ -109,7 +109,7 @@ export default function StackingCardsParallax() {
     <section
       id="how-it-works"
       ref={containerRef}
-      className="relative bg-white pb-4 sm:pb-6"
+      className="relative bg-white pb-20 sm:pb-24 lg:pb-32 mb-12 sm:mb-16 lg:mb-20"
     >
       {/* Section Header */}
       <div className="mx-auto max-w-4xl px-4 pb-8 pt-8 text-center sm:pt-10">
@@ -143,6 +143,7 @@ export default function StackingCardsParallax() {
 
       {/* Cards */}
       <div
+        className="pt-12 sm:pt-16 lg:pt-20"
         style={{
           height: `${cards.length * 100}vh`,
         }}
