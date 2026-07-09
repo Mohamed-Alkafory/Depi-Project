@@ -123,7 +123,7 @@
 //     </div>
 //   );
 // }
-import { STATUS_OPTIONS, STYLE_OPTIONS } from "../constants";
+import { STATUS_OPTIONS, STYLE_OPTIONS } from "../Constants";
 
 export function BasicInfoStep({ register, errors, isEditing, categories }) {
   return (

@@ -76,7 +76,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Upload } from "lucide-react";
-import { IMAGE_TYPES } from "../constants";
+import { IMAGE_TYPES } from "../Constants";
 
 export function ImagesStep({
   images,
