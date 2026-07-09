@@ -460,7 +460,7 @@
 //   );
 // }
 // src/components/layout/Navbar.jsx
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import {
@@ -483,6 +483,7 @@ import { AuthModal } from "@/features/auth/components/AuthModal";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileAccountOpen, setMobileAccountOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [pastHero, setPastHero] = useState(true);
   const location = useLocation();
@@ -554,6 +555,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setMobileMenuOpen(false);
+    setMobileAccountOpen(false);
     setUserMenuOpen(false);
   }, [location.pathname]);
 
@@ -566,6 +568,13 @@ export default function Navbar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     if (observerRef.current) {
@@ -686,7 +695,7 @@ export default function Navbar() {
                 ease: [0.16, 1, 0.3, 1],
                 delay: 0.35,
               }}
-              className="hidden md:flex items-center justify-center gap-8"
+              className="hidden lg:flex items-center justify-center gap-8"
             >
               {navLinks.map((link, i) => (
                 <motion.div
@@ -713,6 +722,7 @@ export default function Navbar() {
 
             <div className="flex items-center justify-end gap-3">
               <motion.div
+                className="hidden lg:flex"
                 initial={{ x: 40, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{
@@ -819,7 +829,7 @@ export default function Navbar() {
               >
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className={`md:hidden flex items-center justify-center rounded-xl p-2.5 transition-all duration-300 ${
+                  className={`lg:hidden flex items-center justify-center rounded-xl p-2.5 transition-all duration-300 ${
                     pastHero
                       ? "text-[#1F2937] hover:bg-gray-100"
                       : "text-white/90 hover:bg-white/10"
@@ -833,22 +843,97 @@ export default function Navbar() {
         </div>
 
         <div
-          className={`fixed inset-0 top-0 z-40 flex flex-col bg-black/95 backdrop-blur-xl transition-all duration-500 ${
+          className={`fixed inset-0 z-[9999] flex flex-col ${
             mobileMenuOpen
               ? "pointer-events-auto opacity-100"
               : "pointer-events-none opacity-0"
-          } md:hidden`}
+          } transition-opacity duration-300`}
+          style={{ backgroundColor: "#ffffff" }}
         >
-          <div className="flex h-20 items-center justify-end px-4 sm:px-6">
+          <div className="flex h-20 shrink-0 items-center justify-between px-4 sm:px-6" style={{ backgroundColor: "#ffffff" }}>
+            <Link to="/" onClick={() => setMobileMenuOpen(false)} className="flex-shrink-0">
+              <img
+                src="/Homi logo2.png"
+                alt="HOMI"
+                className="h-[42px] w-auto object-contain"
+                onError={(e) => {
+                  e.target.style.display = "none";
+                }}
+              />
+            </Link>
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-center rounded-xl p-2.5 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+              className="flex items-center justify-center rounded-xl p-2.5 text-[#555555] transition-colors duration-200 hover:bg-gray-100 hover:text-[#111111]"
             >
               <X size={22} />
             </button>
           </div>
 
-          <div className="flex flex-1 flex-col items-center justify-center gap-8">
+          {isAuthenticated && (
+            <div className="relative w-full" style={{ backgroundColor: "#ffffff" }}>
+              <div className="px-4 sm:px-6">
+                <button
+                  onClick={() => setMobileAccountOpen(!mobileAccountOpen)}
+                  className="flex w-full items-center justify-between rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm transition-shadow duration-200 hover:shadow-md"
+                  aria-expanded={mobileAccountOpen}
+                >
+                  <div className="flex items-center gap-3">
+                    {avatarUrl ? (
+                      <img src={avatarUrl} alt="" className="h-10 w-10 shrink-0 rounded-full object-cover" />
+                    ) : (
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#008080] text-sm font-semibold text-white">
+                        {firstLetter}
+                      </span>
+                    )}
+                    <div className="text-left">
+                      <span className="block text-sm font-medium text-[#111111]">{displayName}</span>
+                      <span className="block text-xs text-[#555555]">Account</span>
+                    </div>
+                  </div>
+                  <ChevronDown
+                    size={18}
+                    className={`text-[#555555] transition-transform duration-200 ${mobileAccountOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+              </div>
+
+              <AnimatePresence initial={false}>
+                {mobileAccountOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                    className="absolute left-0 right-0 z-50 px-4 sm:px-6"
+                  >
+                    <div className="mt-1 overflow-hidden rounded-xl border border-gray-100 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+                      {userMenuItems.map((item) => (
+                        <Link
+                          key={item.to}
+                          to={item.to}
+                          onClick={() => { setMobileMenuOpen(false); setMobileAccountOpen(false); }}
+                          className="flex items-center gap-3 px-4 py-3 text-sm text-[#1F2937] transition-colors hover:bg-gray-50 hover:text-[#008080]"
+                        >
+                          <item.icon size={16} />
+                          {item.label}
+                        </Link>
+                      ))}
+                      <div className="border-t border-gray-100" />
+                      <button
+                        onClick={() => { handleLogout(); setMobileMenuOpen(false); setMobileAccountOpen(false); }}
+                        className="flex w-full items-center gap-3 px-4 py-3 text-sm text-red-500 transition-colors hover:bg-red-50"
+                      >
+                        <LogOut size={16} />
+                        Logout
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+
+          <div className="flex flex-1 flex-col items-center justify-center gap-10" style={{ backgroundColor: "#ffffff" }}>
             {navLinks.map((link) => (
               <Link
                 key={link.to}
@@ -857,64 +942,35 @@ export default function Navbar() {
                   setMobileMenuOpen(false);
                   handleHashClick(link.to, e);
                 }}
-                className={`text-2xl font-medium tracking-wide transition-colors duration-300 ${
+                className={`text-2xl font-semibold tracking-wide transition-colors duration-200 ${
                   isActive(link.to)
                     ? "text-[#008080]"
-                    : "text-white/80 hover:text-white"
+                    : "text-[#111111] hover:text-[#008080]"
                 }`}
               >
                 {link.label}
               </Link>
             ))}
-
-            {isAuthenticated &&
-              userMenuItems.map((item) => (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 text-lg font-medium text-white/70 hover:text-white"
-                >
-                  <item.icon size={18} />
-                  {item.label}
-                </Link>
-              ))}
           </div>
 
-          <div className="border-t border-white/10 px-6 py-8">
-            {isAuthenticated ? (
-              <button
-                onClick={() => {
-                  handleLogout();
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full rounded-2xl bg-red-500/10 px-6 py-3.5 text-center text-sm font-medium text-red-300 transition-colors hover:bg-red-500/20"
-              >
-                Logout
-              </button>
-            ) : (
+          {!isAuthenticated && (
+            <div className="shrink-0 border-t border-gray-100 px-6 py-8" style={{ backgroundColor: "#ffffff" }}>
               <div className="flex flex-col gap-3">
                 <button
-                  onClick={() => {
-                    openModal("signin");
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full rounded-2xl border border-white/20 px-6 py-3.5 text-center text-sm font-medium text-white/90 hover:border-white/40"
+                  onClick={() => { openModal("signin"); setMobileMenuOpen(false); }}
+                  className="w-full rounded-2xl border border-gray-200 px-6 py-3.5 text-center text-sm font-medium text-[#555555] transition-colors duration-200 hover:border-[#008080] hover:text-[#008080]"
                 >
                   Sign In
                 </button>
                 <button
-                  onClick={() => {
-                    openModal("signup");
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full rounded-2xl bg-[#008080] px-6 py-3.5 text-center text-sm font-semibold text-white"
+                  onClick={() => { openModal("signup"); setMobileMenuOpen(false); }}
+                  className="w-full rounded-2xl bg-[#008080] px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors duration-200 hover:bg-[#006666]"
                 >
                   Sign Up
                 </button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </motion.nav>
 

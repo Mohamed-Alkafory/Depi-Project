@@ -27,9 +27,6 @@ const STATS = [
 
 const TestimonialSection = ({
   quote = "I built my team around one rule — don't leave until the client is happy. Every person on my crew takes your project personally, not just professionally.",
-  authorName = "Robert Williams",
-  authorTitle = "CEO of Homi",
-  authorImage = "/images/ceo.jpg",
   topImage = "/images/work-1.jpg",
   bottomImage = "/images/work-2.jpg",
   backgroundColor = "#f8f9fa",
@@ -171,29 +168,7 @@ const TestimonialSection = ({
               </p>
             </blockquote>
 
-            <div className="mt-8 flex items-center gap-4">
-              <div className="h-12 w-12 overflow-hidden rounded-full">
-                <img
-                  src={authorImage}
-                  alt={authorName}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div>
-                <p
-                  className="text-sm font-semibold text-[var(--heading)]"
-                  style={{ fontFamily: "Montserrat, sans-serif" }}
-                >
-                  {authorName}
-                </p>
-                <p
-                  className="text-sm text-[var(--paragraph)]"
-                  style={{ fontFamily: "Manrope, sans-serif" }}
-                >
-                  {authorTitle}
-                </p>
-              </div>
-            </div>
+            
           </div>
         </div>
 
