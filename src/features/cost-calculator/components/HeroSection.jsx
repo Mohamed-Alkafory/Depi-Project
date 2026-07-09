@@ -1,10 +1,11 @@
+import heroImg from "/src/assets/images/homes/Picture_6.avif";
 export default function HeroSection({ onStart }) {
   return (
     <section className="relative w-full bg-white rounded-[2.5rem] p-2 md:p-3 shadow-xl mb-10">
       {/* Image Frame */}
       <div className="relative rounded-[2rem] overflow-hidden group">
         <img
-          src="/src/assets/images/homes/Picture_6.avif"
+          src={heroImg}
           alt="Modern house"
           className="w-full h-[380px] md:h-[440px] object-cover group-hover:scale-[1.02] transition-transform duration-700"
         />
