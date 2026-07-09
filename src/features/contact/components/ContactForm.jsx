@@ -39,7 +39,7 @@ const ContactForm = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log('Form submitted:', data);
+
     reset();
     alert('Message sent successfully!');
   };
