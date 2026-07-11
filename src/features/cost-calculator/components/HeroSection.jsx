@@ -35,7 +35,7 @@ export default function HeroSection({ onStart }) {
       </div>
 
       {/* Floating white notch with button */}
-      <div className="absolute -bottom-2 left-4 md:left-8 bg-white rounded-full p-2 shadow-lg">
+      {/* <div className="absolute -bottom-2 left-4 md:left-8 bg-white rounded-full p-2 shadow-lg">
         <button
           onClick={onStart}
           className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-white text-sm md:text-base font-medium transition-all active:scale-[0.98] hover:opacity-90"
@@ -43,7 +43,8 @@ export default function HeroSection({ onStart }) {
         >
           Schedule a Free Consultation
         </button>
-      </div>
+      </div> */}
     </section>
   );
 }
+

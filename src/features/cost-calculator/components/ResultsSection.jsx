@@ -1,517 +1,342 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  ArrowLeft,
-  RotateCcw,
-  Download,
-  Printer,
-  Share2,
-  Home,
-  Building2,
-  Layers,
-  TreePalm,
-  Wrench,
-  Package,
-  Anvil,
-  BrickWall,
-  Shovel,
-  HardHat,
-  ClipboardList,
-  TrendingUp,
-  Sparkles,
-  CheckCircle2,
-  Calendar,
-  Gauge,
-  FileText,
+  ArrowLeft, RotateCcw, Download, Printer, Share2,
+  Home, Building2, Layers, TreePalm, Wrench, Package,
+  Anvil, BrickWall, Shovel, ClipboardList, TrendingUp,
+  Sparkles, CheckCircle2, Gauge, FileText,
 } from "lucide-react";
 import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip as ReTooltip,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
+  PieChart, Pie, Cell, Tooltip as ReTooltip, ResponsiveContainer,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid,
 } from "recharts";
 
 function formatEGP(n) {
   return Math.round(n).toLocaleString("en-US") + " EGP";
 }
 
-/* ---------- animated count-up (respects reduced-motion) ---------- */
 function useCountUp(target, duration = 1400) {
   const [value, setValue] = useState(0);
   useEffect(() => {
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) {
-      setValue(target);
-      return;
-    }
-    let raf;
-    let start = null;
-    const step = (ts) => {
-      if (start === null) start = ts;
-      const progress = Math.min((ts - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setValue(target * eased);
-      if (progress < 1) raf = requestAnimationFrame(step);
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) { setValue(target); return; }
+    let raf, start = null;
+    const tick = (ts) => {
+      if (!start) start = ts;
+      const p = Math.min((ts - start) / duration, 1);
+      setValue(target * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) raf = requestAnimationFrame(tick);
     };
-    raf = requestAnimationFrame(step);
+    raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [target, duration]);
   return value;
 }
 
-/* ---------- tiny deterministic sparkline (decorative only) ---------- */
+/* ── sparkline ── */
 function sparkPoints(seed, endValue) {
   let h = 0;
   for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
-  const pts = [];
-  let v = endValue * 0.55;
+  const pts = []; let v = endValue * 0.55;
   for (let i = 0; i < 7; i++) {
     h = (h * 1103515245 + 12345) >>> 0;
-    const noise = (h % 100) / 100;
-    v = Math.max(v + (noise - 0.4) * endValue * 0.18, endValue * 0.15);
+    v = Math.max(v + ((h % 100) / 100 - 0.4) * endValue * 0.18, endValue * 0.15);
     pts.push(v);
   }
-  pts.push(endValue);
-  return pts;
+  pts.push(endValue); return pts;
 }
-
-function Sparkline({ seed, value, strokeClassName }) {
+function Sparkline({ seed, value, color = "#0d9488" }) {
   const data = useMemo(() => sparkPoints(seed, value || 1), [seed, value]);
-  const max = Math.max(...data);
-  const min = Math.min(...data);
-  const pts = data
-    .map((d, i) => {
-      const x = (i / (data.length - 1)) * 72;
-      const y = 26 - ((d - min) / (max - min || 1)) * 20 - 2;
-      return `${x},${y}`;
-    })
-    .join(" ");
+  const max = Math.max(...data), min = Math.min(...data);
+  const pts = data.map((d, i) =>
+    `${(i / (data.length - 1)) * 64},${22 - ((d - min) / (max - min || 1)) * 18}`
+  ).join(" ");
   return (
-    <svg width="72" height="26" viewBox="0 0 72 26" className="overflow-visible">
-      <polyline
-        points={pts}
-        fill="none"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={strokeClassName}
-      />
+    <svg width="64" height="22" viewBox="0 0 64 22" className="overflow-visible opacity-70">
+      <polyline points={pts} fill="none" strokeWidth="2" strokeLinecap="round"
+        strokeLinejoin="round" stroke={color} />
     </svg>
   );
 }
 
-/* ---------- meta / styling maps ---------- */
+/* ── meta maps ── */
 const MATERIAL_META = {
-  cement: { icon: Package, unit: "ton", accent: "from-slate-500 to-slate-700", ring: "ring-slate-200", glow: "shadow-slate-300/40", stroke: "stroke-slate-500" },
-  iron: { icon: Anvil, unit: "ton", accent: "from-zinc-600 to-zinc-800", ring: "ring-zinc-200", glow: "shadow-zinc-300/40", stroke: "stroke-zinc-600" },
-  gravel: { icon: Layers, unit: "m³", accent: "from-amber-500 to-orange-600", ring: "ring-amber-200", glow: "shadow-amber-300/40", stroke: "stroke-amber-500" },
-  sand: { icon: Shovel, unit: "m³", accent: "from-yellow-400 to-amber-500", ring: "ring-yellow-200", glow: "shadow-yellow-300/40", stroke: "stroke-yellow-500" },
-  brick: { icon: BrickWall, unit: "1000 pcs", accent: "from-rose-500 to-red-600", ring: "ring-rose-200", glow: "shadow-rose-300/40", stroke: "stroke-rose-500" },
-  labor: { icon: HardHat, unit: "—", accent: "from-teal-500 to-cyan-600", ring: "ring-teal-200", glow: "shadow-teal-300/40", stroke: "stroke-teal-500" },
+  cement: { icon: Package,   unit: "ton",      bags: true,  color: "#64748b", accent: "from-slate-500 to-slate-700",  bg: "bg-slate-50",  border: "border-slate-200" },
+  iron:   { icon: Anvil,     unit: "ton",      bags: false, color: "#52525b", accent: "from-zinc-500 to-zinc-700",    bg: "bg-zinc-50",   border: "border-zinc-200"  },
+  gravel: { icon: Layers,    unit: "m³",       bags: false, color: "#f59e0b", accent: "from-amber-500 to-orange-500", bg: "bg-amber-50",  border: "border-amber-200" },
+  sand:   { icon: Shovel,    unit: "m³",       bags: false, color: "#eab308", accent: "from-yellow-400 to-amber-500", bg: "bg-yellow-50", border: "border-yellow-200"},
+  brick:  { icon: BrickWall, unit: "1000 pcs", bags: false, color: "#f43f5e", accent: "from-rose-500 to-red-600",     bg: "bg-rose-50",   border: "border-rose-200"  },
 };
 
 const BREAKDOWN_META = {
-  Foundations: { icon: Home, accent: "from-teal-500 to-emerald-600", chip: "text-teal-700 bg-teal-50", pie: "#0d9488", desc: "Footings & substructure" },
-  Floors: { icon: Building2, accent: "from-blue-500 to-indigo-600", chip: "text-blue-700 bg-blue-50", pie: "#2563eb", desc: "Columns, slabs & masonry" },
-  "Top Floor (50%)": { icon: TreePalm, accent: "from-amber-500 to-orange-600", chip: "text-amber-700 bg-amber-50", pie: "#f59e0b", desc: "Roof-level extension" },
-  Attachments: { icon: Wrench, accent: "from-violet-500 to-purple-600", chip: "text-violet-700 bg-violet-50", pie: "#7c3aed", desc: "Fittings & site works" },
+  Foundations: { icon: Home,      accent: "from-teal-500 to-emerald-500",   chip: "text-teal-700 bg-teal-50 ring-1 ring-teal-200",   pie: "#0d9488", desc: "Footings & substructure",   glow: "shadow-teal-200"   },
+  Floors:      { icon: Building2, accent: "from-blue-500 to-indigo-500",    chip: "text-blue-700 bg-blue-50 ring-1 ring-blue-200",   pie: "#2563eb", desc: "Columns, slabs & masonry",  glow: "shadow-blue-200"   },
+  "Top Floor": { icon: TreePalm,  accent: "from-amber-400 to-orange-500",   chip: "text-amber-700 bg-amber-50 ring-1 ring-amber-200",pie: "#f59e0b", desc: "Roof-level penthouse",       glow: "shadow-amber-200"  },
+  Attachments: { icon: Wrench,    accent: "from-violet-500 to-purple-600",  chip: "text-violet-700 bg-violet-50 ring-1 ring-violet-200", pie: "#7c3aed", desc: "Fittings & site works", glow: "shadow-violet-200" },
 };
 
 export default function ResultsSection({ results, onBack, onReset }) {
   const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 60);
-    return () => clearTimeout(t);
-  }, []);
-
+  useEffect(() => { const t = setTimeout(() => setMounted(true), 80); return () => clearTimeout(t); }, []);
   const animatedTotal = useCountUp(results.total);
 
   const breakdownItems = [
-    { label: "Foundations", value: results.foundations },
-    { label: `Floors × ${results.floors}`, value: results.floorCost * results.floors, key: "Floors" },
-    results.hasTopFloor && { label: "Top Floor (50%)", value: results.topFloor },
-    { label: "Attachments", value: results.attachment },
+    { key: "Foundations", label: "Foundations",              value: results.foundations               },
+    { key: "Floors",      label: `Floors × ${results.floors}`, value: results.floorCost * results.floors },
+    results.hasTopFloor &&
+    { key: "Top Floor",   label: "Top Floor (Penthouse)",    value: results.topFloor                  },
+    { key: "Attachments", label: "Attachments",              value: results.attachment                },
   ].filter(Boolean);
 
   const maxBreakdown = Math.max(...breakdownItems.map((i) => i.value));
 
-  const pieData = useMemo(
-    () =>
-      breakdownItems.map((item) => ({
-        name: item.label,
-        value: item.value,
-        color: (BREAKDOWN_META[item.key ?? item.label] ?? BREAKDOWN_META.Attachments).pie,
-      })),
-    [results]
-  );
+  const pieData = useMemo(() =>
+    breakdownItems.map((item) => ({
+      name: item.label, value: item.value,
+      color: (BREAKDOWN_META[item.key] ?? BREAKDOWN_META.Attachments).pie,
+    })), [results]);
 
-  const barData = useMemo(
-    () =>
-      Object.entries(results.quantities).map(([key, value]) => ({
-        name: key,
-        value: Number(value.toFixed(2)),
-      })),
-    [results]
-  );
-
-  const calcDate = useMemo(
-    () => new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
-    []
-  );
+  const barData = useMemo(() =>
+    Object.entries(results.quantities).map(([key, value]) => ({
+      name: key.charAt(0).toUpperCase() + key.slice(1),
+      value: Number(value.toFixed(2)),
+    })), [results]);
 
   const handleShare = async () => {
     try {
-      if (navigator.share) {
-        await navigator.share({
-          title: "Construction Cost Estimate",
-          text: `Estimated cost: ${formatEGP(results.total)}`,
-        });
-      } else {
-        await navigator.clipboard.writeText(window.location.href);
-      }
-    } catch {
-      /* user cancelled share — no-op */
-    }
+      navigator.share
+        ? await navigator.share({ title: "Cost Estimate", text: formatEGP(results.total) })
+        : await navigator.clipboard.writeText(window.location.href);
+    } catch {}
   };
 
   return (
-    <div className="bg-slate-50 rounded-[24px] p-4 md:p-8 -m-4 md:-m-8">
+    <div className="space-y-6">
       <style>{`
-        @keyframes rs-fade-up { from { opacity:0; transform:translateY(14px);} to {opacity:1; transform:translateY(0);} }
-        .rs-in { animation: rs-fade-up .6s cubic-bezier(.22,1,.36,1) both; }
-        @media (prefers-reduced-motion: reduce) { .rs-in { animation: none; } }
+        @keyframes rs-up { from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)} }
+        .rs-in { animation: rs-up .55s cubic-bezier(.22,1,.36,1) both }
+        @media(prefers-reduced-motion:reduce){.rs-in{animation:none}}
       `}</style>
 
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6 rs-in">
+      {/* ── HEADER ── */}
+      <div className="flex items-center justify-between rs-in">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-2xl bg-teal-600/10 flex items-center justify-center">
+          <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-teal-500/20 to-teal-600/10 flex items-center justify-center shadow-inner shadow-teal-100">
             <ClipboardList size={20} className="text-teal-700" />
           </div>
           <div>
             <h2 className="text-xl font-bold text-gray-900 tracking-tight">Cost Estimate</h2>
-            <p className="text-xs text-gray-500">Your project cost breakdown</p>
+            <p className="text-xs text-gray-400 mt-0.5">Your project cost breakdown</p>
           </div>
         </div>
-        <button
-          onClick={onReset}
-          className="p-2.5 text-gray-400 hover:text-gray-600 rounded-xl hover:bg-white transition-colors motion-reduce:transition-none"
-          title="Reset"
-        >
-          <RotateCcw size={18} />
+        <button onClick={onReset}
+          className="p-2.5 text-gray-400 hover:text-gray-600 rounded-xl hover:bg-gray-100/80 hover:shadow-sm transition-all"
+          title="Reset">
+          <RotateCcw size={17} />
         </button>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-6 xl:gap-8 items-start">
-        {/* ============ MAIN COLUMN ============ */}
-        <div className="space-y-8 min-w-0">
-          {/* ---------- HERO COST CARD ---------- */}
-          <div
-            className="relative overflow-hidden rounded-[24px] p-7 md:p-10 text-white shadow-[0_30px_80px_-24px_rgba(13,148,136,0.55)] rs-in"
-            style={{
-              background:
-                "linear-gradient(135deg, #0d9488 0%, #0f766e 45%, #155e75 100%)",
-            }}
-          >
-            {/* glass reflection sweep */}
-            <div
-              className="pointer-events-none absolute inset-0 opacity-40"
-              style={{
-                background:
-                  "linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.16) 45%, transparent 60%)",
-              }}
-            />
-            <div className="pointer-events-none absolute -top-24 -right-16 w-80 h-80 bg-white/10 rounded-full blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-24 -left-10 w-72 h-72 bg-cyan-300/20 rounded-full blur-3xl" />
+      {/* ── HERO CARD ── */}
+      <div className="relative overflow-hidden rounded-3xl p-8 md:p-10 text-white rs-in
+        shadow-[0_32px_64px_-16px_rgba(13,148,136,0.5),0_8px_24px_-8px_rgba(13,148,136,0.3)]"
+        style={{ background: "linear-gradient(135deg,#0f766e 0%,#0d9488 40%,#0891b2 100%)" }}>
 
-            <div className="relative">
-              <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-                <span className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-wide bg-white/15 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-full">
-                  <CheckCircle2 size={13} /> Calculation completed
-                </span>
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-white/80 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full">
-                  <Gauge size={13} /> Live market pricing
-                </span>
-              </div>
+        {/* glass sweep */}
+        <div className="pointer-events-none absolute inset-0"
+          style={{ background: "linear-gradient(120deg,transparent 35%,rgba(255,255,255,0.12) 50%,transparent 65%)" }} />
+        {/* blobs */}
+        <div className="pointer-events-none absolute -top-20 -right-20 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-20 -left-10 w-64 h-64 bg-cyan-400/20 rounded-full blur-3xl" />
+        {/* noise texture */}
+        <div className="pointer-events-none absolute inset-0 opacity-[0.04]"
+          style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }} />
 
-              <div className="flex items-center gap-2 text-white/80">
-                <TrendingUp size={16} />
-                <span className="text-sm font-medium tracking-wide">Total Estimated Cost</span>
-              </div>
-
-              <p className="mt-3 text-4xl md:text-6xl font-bold tracking-tight tabular-nums">
-                {formatEGP(animatedTotal)}
-              </p>
-
-              <div className="mt-7 flex flex-wrap gap-2.5">
-                <span className="inline-flex items-center gap-1.5 text-sm bg-white/15 backdrop-blur-md border border-white/10 px-3.5 py-1.5 rounded-full">
-                  <Home size={14} /> {results.area} m²
-                </span>
-                <span className="inline-flex items-center gap-1.5 text-sm bg-white/15 backdrop-blur-md border border-white/10 px-3.5 py-1.5 rounded-full">
-                  <Building2 size={14} /> {results.floors} Floor{results.floors > 1 ? "s" : ""}
-                </span>
-                <span className="inline-flex items-center gap-1.5 text-sm bg-white/15 backdrop-blur-md border border-white/10 px-3.5 py-1.5 rounded-full">
-                  <Sparkles size={14} /> Roof {results.hasTopFloor ? "Included" : "Standard"}
-                </span>
-              </div>
-            </div>
+        <div className="relative">
+          <div className="flex flex-wrap gap-2 mb-8">
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-white/15 backdrop-blur-sm border border-white/25 px-3 py-1.5 rounded-full shadow-sm">
+              <CheckCircle2 size={12} /> Calculation completed
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-white/75 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full">
+              <Gauge size={12} /> Live market pricing
+            </span>
           </div>
 
-          {/* ---------- COST BREAKDOWN ---------- */}
-          <div className="rs-in" style={{ animationDelay: "80ms" }}>
-            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-[0.15em] mb-4">
-              Cost Breakdown
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {breakdownItems.map((item, idx) => {
-                const meta = BREAKDOWN_META[item.key ?? item.label] ?? BREAKDOWN_META.Attachments;
-                const Icon = meta.icon;
-                const pct = Math.round((item.value / results.total) * 100);
-                const barPct = Math.round((item.value / maxBreakdown) * 100);
-                return (
-                  <div
-                    key={item.label}
-                    className="group relative bg-white/80 backdrop-blur-xl rounded-[20px] p-5 border border-white shadow-[0_8px_30px_-12px_rgba(15,23,42,0.12)] hover:shadow-[0_18px_44px_-16px_rgba(15,23,42,0.22)] hover:-translate-y-1 transition-all duration-300 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
-                    style={{ transitionDelay: `${idx * 40}ms` }}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${meta.accent} flex items-center justify-center shadow-lg`}
-                        >
-                          <Icon size={19} className="text-white" />
-                        </div>
-                        <div>
-                          <span className="text-sm font-semibold text-gray-800 block">
-                            {item.label}
-                          </span>
-                          <span className="text-[11px] text-gray-400">{meta.desc}</span>
-                        </div>
-                      </div>
-                      <span className={`text-xs font-bold px-2 py-1 rounded-full ${meta.chip}`}>
-                        {pct}%
-                      </span>
+          <div className="flex items-center gap-2 text-white/70 mb-2">
+            <TrendingUp size={15} />
+            <span className="text-xs font-semibold tracking-widest uppercase">Total Estimated Cost</span>
+          </div>
+          <p className="text-4xl md:text-5xl font-bold tracking-tight tabular-nums drop-shadow-sm">
+            {formatEGP(animatedTotal)}
+          </p>
+
+          <div className="mt-7 flex flex-wrap gap-2">
+            {[
+              { icon: Home,      label: `${results.area} m²` },
+              { icon: Building2, label: `${results.floors} Floor${results.floors !== 1 ? "s" : ""}` },
+              { icon: Sparkles,  label: results.hasTopFloor ? "Penthouse Included" : "Standard Roof" },
+            ].map(({ icon: Icon, label }) => (
+              <span key={label} className="inline-flex items-center gap-1.5 text-sm bg-white/12 backdrop-blur-sm border border-white/15 px-3.5 py-1.5 rounded-full shadow-sm hover:bg-white/20 transition-colors">
+                <Icon size={13} /> {label}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── COST BREAKDOWN ── */}
+      <div className="rs-in" style={{ animationDelay: "70ms" }}>
+        <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.18em] mb-4">Cost Breakdown</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {breakdownItems.map((item, idx) => {
+            const meta = BREAKDOWN_META[item.key] ?? BREAKDOWN_META.Attachments;
+            const Icon = meta.icon;
+            const pct = Math.round((item.value / results.total) * 100);
+            const barPct = Math.round((item.value / maxBreakdown) * 100);
+            return (
+              <div key={item.key}
+                className={`group relative bg-white rounded-2xl p-5 border border-gray-100
+                  shadow-[0_2px_8px_-2px_rgba(0,0,0,0.08),0_1px_3px_-1px_rgba(0,0,0,0.04)]
+                  hover:shadow-[0_12px_32px_-8px_rgba(0,0,0,0.12),0_4px_12px_-4px_${meta.glow}/40]
+                  hover:-translate-y-1 transition-all duration-300`}
+                style={{ transitionDelay: `${idx * 35}ms` }}>
+
+                {/* top accent bar */}
+                <div className={`absolute inset-x-0 top-0 h-0.5 rounded-t-2xl bg-gradient-to-r ${meta.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-11 h-11 rounded-2xl bg-gradient-to-br ${meta.accent} flex items-center justify-center
+                      shadow-[0_4px_12px_-4px_rgba(0,0,0,0.25)] group-hover:shadow-[0_8px_20px_-6px_rgba(0,0,0,0.3)] transition-shadow`}>
+                      <Icon size={18} className="text-white drop-shadow" />
                     </div>
-
-                    <p className="mt-4 text-2xl font-bold text-gray-900 tracking-tight tabular-nums">
-                      {formatEGP(item.value)}
-                    </p>
-
-                    <div className="mt-3 h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full bg-gradient-to-r ${meta.accent} transition-all duration-1000 ease-out motion-reduce:transition-none`}
-                        style={{ width: mounted ? `${barPct}%` : "0%" }}
-                      />
+                    <div>
+                      <span className="text-sm font-semibold text-gray-800 block leading-tight">{item.label}</span>
+                      <span className="text-[11px] text-gray-400 mt-0.5 block">{meta.desc}</span>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </div>
+                  <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${meta.chip} shadow-sm`}>{pct}%</span>
+                </div>
 
-          {/* ---------- MATERIAL QUANTITIES ---------- */}
-          <div className="rs-in" style={{ animationDelay: "140ms" }}>
-            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-[0.15em] mb-4">
-              Material Quantities
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Object.entries(results.quantities).map(([key, value]) => {
-                const meta = MATERIAL_META[key] ?? MATERIAL_META.labor;
-                const Icon = meta.icon;
-                return (
-                  <div
-                    key={key}
-                    className={`group relative overflow-hidden bg-white/80 backdrop-blur-xl rounded-[20px] border border-white ring-1 ring-transparent hover:${meta.ring} shadow-[0_8px_30px_-12px_rgba(15,23,42,0.12)] hover:shadow-lg ${meta.glow} hover:-translate-y-1 transition-all duration-300 motion-reduce:transition-none motion-reduce:hover:translate-y-0`}
-                  >
-                    <div className={`h-1 w-full bg-gradient-to-r ${meta.accent}`} />
-                    <div className="p-5">
-                      <div className="flex items-center justify-between">
-                        <div
-                          className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${meta.accent} flex items-center justify-center shadow-lg`}
-                        >
-                          <Icon size={20} className="text-white" />
-                        </div>
-                        <Sparkline seed={key} value={value} strokeClassName={meta.stroke} />
-                      </div>
+                <p className="text-2xl font-bold text-gray-900 tabular-nums mb-3 tracking-tight">{formatEGP(item.value)}</p>
 
-                      <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-gray-500">
-                        {key}
-                      </p>
-                      <div className="flex items-baseline gap-1.5">
-                        <p className="mt-1 text-3xl font-bold text-gray-900 tracking-tight tabular-nums">
-                          {value.toFixed(2)}
-                        </p>
-                        <span className="text-xs font-medium text-gray-400">{meta.unit}</span>
-                      </div>
+                <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                  <div className={`h-full rounded-full bg-gradient-to-r ${meta.accent} transition-all duration-1000 ease-out`}
+                    style={{ width: mounted ? `${barPct}%` : "0%", transitionDelay: `${idx * 80}ms` }} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── MATERIAL QUANTITIES ── */}
+      <div className="rs-in" style={{ animationDelay: "130ms" }}>
+        <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.18em] mb-4">Material Quantities</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          {Object.entries(results.quantities).map(([key, value]) => {
+            const meta = MATERIAL_META[key] ?? MATERIAL_META.cement;
+            const Icon = meta.icon;
+            const extra = key === "cement" ? `${Math.round(value * 20)} bags`
+                        : key === "brick"  ? `${Math.round(value * 1000)} pcs` : null;
+            return (
+              <div key={key}
+                className={`group relative overflow-hidden bg-white rounded-2xl border ${meta.border}
+                  shadow-[0_2px_8px_-2px_rgba(0,0,0,0.07)]
+                  hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.12)]
+                  hover:-translate-y-1 transition-all duration-300`}>
+
+                {/* top color bar */}
+                <div className={`h-1 w-full bg-gradient-to-r ${meta.accent}`} />
+
+                <div className="p-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${meta.accent} flex items-center justify-center
+                      shadow-[0_4px_10px_-4px_rgba(0,0,0,0.25)]`}>
+                      <Icon size={15} className="text-white" />
                     </div>
+                    <Sparkline seed={key} value={value} color={meta.color} />
                   </div>
-                );
-              })}
-            </div>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 capitalize mb-1">{key}</p>
+                  <p className="text-xl font-bold text-gray-900 tabular-nums leading-none">{value.toFixed(2)}</p>
+                  <p className="text-[11px] text-gray-400 mt-1">{meta.unit}</p>
+                  {extra && <p className="text-[11px] font-semibold text-teal-600 mt-1">{extra}</p>}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── CHARTS ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 rs-in" style={{ animationDelay: "190ms" }}>
+        <div className="bg-white rounded-2xl border border-gray-100 p-5
+          shadow-[0_2px_8px_-2px_rgba(0,0,0,0.07)] hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.1)] transition-shadow">
+          <h4 className="text-sm font-bold text-gray-800">Cost Distribution</h4>
+          <p className="text-xs text-gray-400 mt-0.5 mb-3">Share of total by category</p>
+          <ResponsiveContainer width="100%" height={190}>
+            <PieChart>
+              <Pie data={pieData} dataKey="value" nameKey="name" innerRadius={48} outerRadius={78} paddingAngle={3} animationDuration={900}>
+                {pieData.map((e, i) => <Cell key={i} fill={e.color} stroke="none" />)}
+              </Pie>
+              <ReTooltip formatter={(v) => formatEGP(v)}
+                contentStyle={{ borderRadius: 10, border: "1px solid #e5e7eb", fontSize: 12, boxShadow: "0 8px 24px -8px rgba(0,0,0,0.15)" }} />
+            </PieChart>
+          </ResponsiveContainer>
+          <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+            {pieData.map((d) => (
+              <span key={d.name} className="inline-flex items-center gap-1.5 text-[11px] text-gray-500">
+                <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: d.color }} />
+                {d.name}
+              </span>
+            ))}
           </div>
-
-          {/* ---------- CHARTS ---------- */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 rs-in" style={{ animationDelay: "200ms" }}>
-            <div className="bg-white/80 backdrop-blur-xl rounded-[20px] border border-white shadow-[0_8px_30px_-12px_rgba(15,23,42,0.12)] p-5">
-              <h4 className="text-sm font-bold text-gray-800 mb-1">Cost Distribution</h4>
-              <p className="text-xs text-gray-400 mb-2">Share of total by category</p>
-              <ResponsiveContainer width="100%" height={220}>
-                <PieChart>
-                  <Pie
-                    data={pieData}
-                    dataKey="value"
-                    nameKey="name"
-                    innerRadius={55}
-                    outerRadius={85}
-                    paddingAngle={3}
-                    animationDuration={900}
-                  >
-                    {pieData.map((entry, i) => (
-                      <Cell key={i} fill={entry.color} stroke="none" />
-                    ))}
-                  </Pie>
-                  <ReTooltip
-                    formatter={(v) => formatEGP(v)}
-                    contentStyle={{ borderRadius: 12, border: "1px solid #e5e7eb", fontSize: 12 }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-              <div className="flex flex-wrap gap-x-4 gap-y-1.5 mt-2">
-                {pieData.map((d) => (
-                  <span key={d.name} className="inline-flex items-center gap-1.5 text-[11px] text-gray-500">
-                    <span className="w-2 h-2 rounded-full" style={{ background: d.color }} />
-                    {d.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-white/80 backdrop-blur-xl rounded-[20px] border border-white shadow-[0_8px_30px_-12px_rgba(15,23,42,0.12)] p-5">
-              <h4 className="text-sm font-bold text-gray-800 mb-1">Material Consumption</h4>
-              <p className="text-xs text-gray-400 mb-2">Quantity per material</p>
-              <ResponsiveContainer width="100%" height={220}>
-                <BarChart data={barData}>
-                  <CartesianGrid vertical={false} stroke="#f1f5f9" />
-                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
-                  <ReTooltip
-                    contentStyle={{ borderRadius: 12, border: "1px solid #e5e7eb", fontSize: 12 }}
-                  />
-                  <Bar dataKey="value" fill="#0d9488" radius={[8, 8, 0, 0]} animationDuration={900} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          {/* ---------- DOWNLOAD SECTION ---------- */}
-          <div
-            className="relative overflow-hidden rounded-[24px] border border-white bg-white/80 backdrop-blur-xl shadow-[0_8px_30px_-12px_rgba(15,23,42,0.12)] p-6 md:p-8 rs-in"
-            style={{ animationDelay: "260ms" }}
-          >
-            <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center shadow-lg shadow-teal-500/30 shrink-0">
-                <FileText size={32} className="text-white" />
-              </div>
-              <div className="flex-1 text-center md:text-left">
-                <h4 className="text-base font-bold text-gray-900">Export your report</h4>
-                <p className="text-sm text-gray-500 mt-0.5">
-                  Download a full breakdown of costs and material quantities to share with your team.
-                </p>
-              </div>
-              <div className="flex gap-2 shrink-0">
-                <button
-                  onClick={() => window.print()}
-                  className="inline-flex items-center gap-2 px-5 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-2xl font-semibold text-sm transition-all shadow-lg shadow-teal-600/25 hover:shadow-teal-600/40 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
-                >
-                  <Download size={16} /> Export PDF
-                </button>
-                <button
-                  onClick={() => window.print()}
-                  className="inline-flex items-center justify-center w-11 h-11 rounded-2xl border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all"
-                  title="Print"
-                >
-                  <Printer size={16} />
-                </button>
-                <button
-                  onClick={handleShare}
-                  className="inline-flex items-center justify-center w-11 h-11 rounded-2xl border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all"
-                  title="Share"
-                >
-                  <Share2 size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <button
-            onClick={onBack}
-            className="xl:hidden w-full py-3.5 rounded-2xl border border-gray-200 bg-white text-gray-700 font-semibold hover:bg-gray-50 hover:border-gray-300 transition-all flex items-center justify-center gap-2"
-          >
-            <ArrowLeft size={18} /> Edit Data
-          </button>
         </div>
 
-        {/* ============ RIGHT STICKY PANEL ============ */}
-        <aside className="xl:sticky xl:top-6 rs-in" style={{ animationDelay: "100ms" }}>
-          <div className="relative overflow-hidden rounded-[24px] bg-white/80 backdrop-blur-xl border border-white shadow-[0_20px_60px_-24px_rgba(15,23,42,0.25)]">
-            <div className="p-6 bg-gradient-to-br from-teal-600 to-cyan-700 text-white relative overflow-hidden">
-              <div className="pointer-events-none absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
-              <p className="text-xs font-medium text-white/80 tracking-wide relative">Project Summary</p>
-              <p className="text-2xl font-bold mt-1 relative tabular-nums">{formatEGP(results.total)}</p>
-              <span className="inline-flex items-center gap-1.5 mt-3 text-[11px] font-semibold bg-white/15 backdrop-blur-md px-2.5 py-1 rounded-full relative">
-                <CheckCircle2 size={12} /> Completed
-              </span>
-            </div>
-
-            <div className="p-5 space-y-1">
-              {[
-                { icon: Home, label: "Building Area", value: `${results.area} m²` },
-                { icon: Building2, label: "Number of Floors", value: results.floors },
-                {
-                  icon: Sparkles,
-                  label: "Roof Status",
-                  value: results.hasTopFloor ? "Included" : "Standard",
-                },
-                { icon: Calendar, label: "Calculation Date", value: calcDate },
-              ].map((row) => (
-                <div
-                  key={row.label}
-                  className="flex items-center justify-between py-2.5 border-b border-gray-100 last:border-b-0"
-                >
-                  <span className="flex items-center gap-2 text-xs text-gray-500">
-                    <row.icon size={14} className="text-teal-600" />
-                    {row.label}
-                  </span>
-                  <span className="text-sm font-semibold text-gray-900">{row.value}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="p-5 pt-0 space-y-2">
-              <button
-                onClick={onBack}
-                className="hidden xl:flex w-full py-3 rounded-2xl border border-gray-200 bg-white text-gray-700 font-semibold text-sm hover:bg-gray-50 hover:border-gray-300 transition-all items-center justify-center gap-2"
-              >
-                <ArrowLeft size={16} /> Edit Data
-              </button>
-              <button
-                onClick={() => window.print()}
-                className="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-2xl font-semibold text-sm transition-all shadow-lg shadow-teal-600/25 hover:shadow-teal-600/40 flex items-center justify-center gap-2"
-              >
-                <Download size={16} /> Save PDF
-              </button>
-            </div>
-          </div>
-        </aside>
+        <div className="bg-white rounded-2xl border border-gray-100 p-5
+          shadow-[0_2px_8px_-2px_rgba(0,0,0,0.07)] hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.1)] transition-shadow">
+          <h4 className="text-sm font-bold text-gray-800">Material Consumption</h4>
+          <p className="text-xs text-gray-400 mt-0.5 mb-3">Quantity per material</p>
+          <ResponsiveContainer width="100%" height={190}>
+            <BarChart data={barData} margin={{ top: 4, right: 4, left: -18, bottom: 0 }}>
+              <CartesianGrid vertical={false} stroke="#f1f5f9" />
+              <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+              <ReTooltip contentStyle={{ borderRadius: 10, border: "1px solid #e5e7eb", fontSize: 12, boxShadow: "0 8px 24px -8px rgba(0,0,0,0.15)" }} />
+              <Bar dataKey="value" fill="#0d9488" radius={[6, 6, 0, 0]} animationDuration={900} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
+
+      {/* ── EXPORT ── */}
+      <div className="relative overflow-hidden bg-white rounded-2xl border border-gray-100 p-6 rs-in
+        shadow-[0_4px_16px_-4px_rgba(0,0,0,0.08)]"
+        style={{ animationDelay: "240ms" }}>
+        {/* soft teal glow bg */}
+        <div className="pointer-events-none absolute -top-12 -right-12 w-48 h-48 bg-teal-50 rounded-full blur-3xl opacity-60" />
+        <div className="relative flex flex-col sm:flex-row items-center gap-5">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center
+            shadow-[0_8px_20px_-6px_rgba(13,148,136,0.5)] shrink-0">
+            <FileText size={22} className="text-white drop-shadow" />
+          </div>
+          <div className="flex-1 text-center sm:text-left">
+            <h4 className="text-sm font-bold text-gray-900">Export your report</h4>
+            <p className="text-xs text-gray-500 mt-0.5">Download a full breakdown of costs and material quantities.</p>
+          </div>
+          <div className="flex gap-2 shrink-0">
+            <button onClick={() => window.print()}
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-semibold text-sm
+              transition-all shadow-[0_4px_14px_-4px_rgba(13,148,136,0.6)] hover:shadow-[0_8px_20px_-6px_rgba(13,148,136,0.7)] hover:-translate-y-0.5">
+              <Download size={15} /> Export PDF
+            </button>
+            <button onClick={handleShare}
+              className="inline-flex items-center justify-center w-10 h-10 rounded-xl border border-gray-200 bg-white text-gray-500
+              hover:bg-gray-50 hover:border-gray-300 hover:shadow-sm transition-all" title="Share">
+              <Share2 size={15} />
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }

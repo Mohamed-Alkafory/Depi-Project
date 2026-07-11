@@ -10,7 +10,6 @@ import BasicDataSection from "./BasicDataSection";
 import ResultsSection from "./ResultsSection";
 import { DEFAULT_PRICES, ATTACHMENTS_COST } from "../constants/prices";
  
-import MaterialQuantitiesCard from "./MaterialQuantitiesCard";
 
 export default function CostCalculator() {
   const [step, setStep] = useState(1);
@@ -131,101 +130,122 @@ export default function CostCalculator() {
       <div className="max-w-7xl mx-auto px-4">
        
         {/* Hero Section */}
-        <HeroSection
-          onStart={() => {
-            const el = document.getElementById("calc-card");
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-          }}
-          onLearnMore={() => {
-            const el = document.getElementById("calc-card");
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-          }}
-        />
+    
 
         {/* Steps */}
-        <div className="flex items-center justify-center gap-4 mb-8">
-          {[
-            { id: 1, label: "Basic Data" },
-            { id: 2, label: "Results" },
-          ].map((s, i) => (
-            <div key={s.id} className="flex items-center gap-2">
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                  step >= s.id
-                    ? "bg-teal-600 text-white"
-                    : "bg-gray-200 text-gray-500"
-                }`}
-              >
-                {s.id}
-              </div>
-              <span
-                className={`text-sm font-medium ${
-                  step >= s.id ? "text-gray-900" : "text-gray-400"
-                }`}
-              >
-                {s.label}
-              </span>
-              {i < 1 && <div className="w-12 h-0.5 bg-gray-200 ml-2" />}
-            </div>
-          ))}
-        </div>
-
+        
         {/* Content */}
         <div
           id="calc-card"
           className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 scroll-mt-6"
         >
           {step === 1 && (
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-              {/* Left column: Building Information + Material Prices */}
-              <div className="lg:col-span-3 space-y-6">
-                <BuildingInfoSection
-                  dimensions={dimensions}
-                  setDimensions={setDimensions}
-                  floors={floors}
-                  setFloors={setFloors}
-                  hasTopFloor={hasTopFloor}
-                  setHasTopFloor={setHasTopFloor}
-                  area={area}
-                />
-                <MaterialPricesSection
-                  prices={prices}
-                  setPrices={setPrices}
-                />
+            <>
+              <HeroSection
+                onStart={() => {
+                  const el = document.getElementById("calc-card");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+                onLearnMore={() => {
+                  const el = document.getElementById("calc-card");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+              />
+              <div className="flex items-center justify-center gap-4 mb-8">
+                {[
+                  { id: 1, label: "Basic Data" },
+                  { id: 2, label: "Results" },
+                ].map((s, i) => (
+                  <div key={s.id} className="flex items-center gap-2">
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step >= s.id
+                          ? "bg-teal-600 text-white"
+                          : "bg-gray-200 text-gray-500"
+                        }`}
+                    >
+                      {s.id}
+                    </div>
+                    <span
+                      className={`text-sm font-medium ${step >= s.id ? "text-gray-900" : "text-gray-400"
+                        }`}
+                    >
+                      {s.label}
+                    </span>
+                    {i < 1 && <div className="w-12 h-0.5 bg-gray-200 ml-2" />}
+                  </div>
+                ))}
               </div>
 
-              {/* Right column: Summary Card */}
-              <div className="lg:col-span-2">
-                <SummaryCard
-                  results={results}
-                  area={area}
-                  floors={floors}
-                  hasTopFloor={hasTopFloor}
-                  onStart={handleCalculate}
-                  onBack={() => setStep(1)}
-                  onReset={reset}
-                />
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                {/* Left column: Building Information + Material Prices */}
+                <div className="lg:col-span-3 space-y-6">
+                  <BuildingInfoSection
+                    dimensions={dimensions}
+                    setDimensions={setDimensions}
+                    floors={floors}
+                    setFloors={setFloors}
+                    hasTopFloor={hasTopFloor}
+                    setHasTopFloor={setHasTopFloor}
+                    area={area}
+                  />
+                  <MaterialPricesSection
+                    prices={prices}
+                    setPrices={setPrices}
+                  />
+                </div>
+
+                {/* Right column: Summary Card */}
+                <div className="lg:col-span-2">
+                  <SummaryCard
+                    results={results}
+                    area={area}
+                    floors={floors}
+                    hasTopFloor={hasTopFloor}
+                    onStart={handleCalculate}
+                    onBack={() => setStep(1)}
+                    onReset={reset}
+                  />
+                </div>
               </div>
-            </div>
+            </>
+             
           )}
 
           {step === 2 && results && (
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-              <div className="lg:col-span-3 space-y-6">
-                <MaterialQuantitiesCard results={results} />
+            <>
+              <div className="flex items-center justify-center gap-4 mb-8">
+                {[
+                  { id: 1, label: "Basic Data" },
+                  { id: 2, label: "Results" },
+                ].map((s, i) => (
+                  <div key={s.id} className="flex items-center gap-2">
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step >= s.id
+                          ? "bg-teal-600 text-white"
+                          : "bg-gray-200 text-gray-500"
+                        }`}
+                    >
+                      {s.id}
+                    </div>
+                    <span
+                      className={`text-sm font-medium ${step >= s.id ? "text-gray-900" : "text-gray-400"
+                        }`}
+                    >
+                      {s.label}
+                    </span>
+                    {i < 1 && <div className="w-12 h-0.5 bg-gray-200 ml-2" />}
+                  </div>
+                ))}
               </div>
-              <div className="lg:col-span-2">
-                <SummaryCard
-                  results={results}
-                  area={area}
-                  floors={floors}
-                  hasTopFloor={hasTopFloor}
-                  onStart={handleCalculate}
-                  onBack={() => setStep(1)}
-                  onReset={reset}
-                />
-              </div>
-            </div>
+              <ResultsSection
+                results={results}
+                onBack={() => setStep(1)}
+                onReset={reset}
+              />
+
+            </>
+            
+            
           )}
         </div>
       </div>
